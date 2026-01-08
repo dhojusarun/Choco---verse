@@ -101,6 +101,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `total_amount` DECIMAL(10,2) NOT NULL,
   `status` ENUM('pending','processing','shipped','delivered','cancelled') DEFAULT 'pending',
   `shipping_address` TEXT,
+  `payment_method` VARCHAR(50) DEFAULT 'online',
+  `payment_sub_method` VARCHAR(50) DEFAULT 'wallet',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

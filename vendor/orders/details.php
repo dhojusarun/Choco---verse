@@ -229,7 +229,10 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
     </style>
 </head>
 
-    <?php include $root . '/includes/vendor_header.php'; ?>
+    <?php 
+    $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
+    include $root . '/includes/vendor_header.php'; 
+    ?>
 
     <div class="dashboard">
         <div class="container">

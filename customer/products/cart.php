@@ -60,7 +60,7 @@ $total = $subtotal + $tax;
     <style>
         .cart-container {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1.2fr 1fr;
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -184,26 +184,26 @@ $total = $subtotal + $tax;
             opacity: 0.7;
         }
         .payment-methods {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         .payment-option {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
             cursor: pointer;
             transition: var(--transition-smooth);
         }
         .payment-option:hover {
             border-color: var(--gold);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
         }
         .payment-option.active {
             border-color: var(--gold);
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(212, 175, 55, 0.08);
         }
         .payment-option input[type="radio"] {
             display: none;
@@ -211,65 +211,67 @@ $total = $subtotal + $tax;
         .option-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
         .option-icon {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
         .sub-options {
             display: none;
-            margin-top: 1rem;
-            padding-left: 2.5rem;
-            border-left: 2px solid var(--gold);
-            margin-left: 0.75rem;
+            margin-top: 0.8rem;
+            padding-left: 1.5rem;
+            border-left: 1px solid var(--gold);
+            margin-left: 0.5rem;
         }
         .payment-option.active .sub-options {
             display: block;
         }
         .payment-form {
             display: none;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-top: 0.8rem;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.8rem;
             opacity: 0.8;
+            color: var(--gold);
         }
         .form-group input {
             width: 100%;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--cream);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
         .form-group input:focus {
             border-color: var(--gold);
             outline: none;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
         }
         .sub-option {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.3rem;
         }
         .sub-option-label {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.6rem;
             cursor: pointer;
             opacity: 0.8;
             transition: opacity 0.2s;
+            font-size: 0.95rem;
         }
         .sub-option-label:hover {
             opacity: 1;
