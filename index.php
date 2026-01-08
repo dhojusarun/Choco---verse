@@ -1,3 +1,6 @@
+<?php session_start(); 
+$is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'customer';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +22,9 @@
                     <a href="index.php" class="nav-link">🏠 Home</a>
                     <a href="customer/products/browse.php" class="nav-link">🍫 Products</a>
                     <a href="pages/categories.php" class="nav-link">📂 Categories</a>
-                    <a href="customer/products/cart.php" class="nav-link">🛒 Cart</a>
+                    <a href="customer/products/cart.php" class="nav-link">
+                        🛒 Cart <span class="cart-badge-inline" id="cart-count-nav" style="display:none; background: var(--gold); color: var(--chocolate-dark); padding: 0.1rem 0.5rem; border-radius: 50%; font-size: 0.7rem; margin-left: 0.3rem; font-weight: bold;">0</span>
+                    </a>
                     <a href="pages/about.php" class="nav-link">ℹ️ About</a>
                     <a href="pages/contact.php" class="nav-link">📞 Contact</a>
                 </nav>
@@ -46,5 +51,24 @@
     $logo_path = 'images/logo.png';
     include 'includes/footer.php'; 
     ?>
+    <script>
+    function updateCartCount() {
+        fetch('customer/products/cart.php?count=true')
+            .then(response => response.json())
+            .then(data => {
+                const badgeNav = document.getElementById('cart-count-nav');
+                if (data.count > 0) {
+                    if (badgeNav) {
+                        badgeNav.textContent = data.count;
+                        badgeNav.style.display = 'inline-block';
+                    }
+                } else {
+                    if (badgeNav) badgeNav.style.display = 'none';
+                }
+            })
+            .catch(() => {});
+    }
+    updateCartCount();
+    </script>
 </body>
 </html>

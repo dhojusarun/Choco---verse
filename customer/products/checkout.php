@@ -31,6 +31,10 @@ try {
         exit;
     }
     
+    // Get payment method from POST
+    $payment_method = $_POST['payment_method'] ?? 'online';
+    $payment_sub_method = $_POST['payment_sub_method'] ?? 'wallet';
+    
     // Verify stock availability for all items
     foreach ($cart_items as $item) {
         if ($item['quantity'] > $item['stock']) {
@@ -47,32 +51,38 @@ try {
     }
     $total_amount = $total_amount * 1.1; // Add 10% tax
     
-    // Check if customer has sufficient wallet balance
-    $wallet_check_stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
-    $wallet_check_stmt->execute([$customer_id]);
-    $wallet_balance = $wallet_check_stmt->fetchColumn();
-    
-    if ($wallet_balance < $total_amount) {
-        $pdo->rollBack();
-        echo json_encode([
-            'success' => false, 
-            'message' => 'Insufficient wallet balance. You have $' . number_format($wallet_balance, 2) . ' but need $' . number_format($total_amount, 2)
-        ]);
-        exit;
+    // Check if customer has sufficient wallet balance (only for online payment)
+    if ($payment_method === 'online') {
+        $wallet_check_stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
+        $wallet_check_stmt->execute([$customer_id]);
+        $wallet_balance = $wallet_check_stmt->fetchColumn();
+        
+        if ($wallet_balance < $total_amount) {
+            $pdo->rollBack();
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Insufficient wallet balance. You have $' . number_format($wallet_balance, 2) . ' but need $' . number_format($total_amount, 2)
+            ]);
+            exit;
+        }
+        
+        // Deduct amount from customer wallet
+        $deduct_wallet_stmt = $pdo->prepare("
+            UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?
+        ");
+        $deduct_wallet_stmt->execute([$total_amount, $customer_id]);
+        
+        $order_status = 'processing'; // Paid orders start as processing
+    } else {
+        $order_status = 'pending'; // COD orders start as pending
     }
-    
-    // Deduct amount from customer wallet
-    $deduct_wallet_stmt = $pdo->prepare("
-        UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?
-    ");
-    $deduct_wallet_stmt->execute([$total_amount, $customer_id]);
     
     // Create order
     $order_stmt = $pdo->prepare("
-        INSERT INTO orders (customer_id, total_amount, status, shipping_address)
-        VALUES (?, ?, 'pending', 'Default shipping address')
+        INSERT INTO orders (customer_id, total_amount, status, shipping_address, payment_method, payment_sub_method)
+        VALUES (?, ?, ?, 'Default shipping address', ?, ?)
     ");
-    $order_stmt->execute([$customer_id, $total_amount]);
+    $order_stmt->execute([$customer_id, $total_amount, $order_status, $payment_method, $payment_sub_method]);
     $order_id = $pdo->lastInsertId();
     
     // Create order items and update stock
@@ -112,7 +122,8 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Order placed successfully!',
-        'order_id' => $order_id
+        'order_id' => $order_id,
+        'payment_method' => $payment_method
     ]);
     
 } catch (PDOException $e) {

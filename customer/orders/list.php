@@ -216,9 +216,21 @@ $orders = $orders_stmt->fetchAll();
                                 <div class="order-id">Order #<?php echo str_pad($order['id'], 5, '0', STR_PAD_LEFT); ?></div>
                                 <div class="order-date">Placed on <?php echo date('F d, Y', strtotime($order['created_at'])); ?></div>
                             </div>
-                            <span class="status-badge status-<?php echo $order['status']; ?>">
-                                <?php echo ucfirst($order['status']); ?>
-                            </span>
+                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+                                <span class="status-badge status-<?php echo $order['status']; ?>">
+                                    <?php 
+                                    if ($order['status'] === 'delivered') {
+                                        echo 'Order is delivered ✅';
+                                    } else {
+                                        echo ucfirst($order['status']); 
+                                    }
+                                    ?>
+                                </span>
+                                <div style="font-size: 0.8rem; opacity: 0.7;">
+                                    Payment: <?php echo strtoupper(str_replace('_', ' ', $order['payment_method'] ?? 'Online')); ?> 
+                                    (<?php echo ucfirst(str_replace('_', ' ', $order['payment_sub_method'] ?? 'Wallet')); ?>)
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="order-details">
@@ -247,6 +259,14 @@ $orders = $orders_stmt->fetchAll();
                                         style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.9rem; background: rgba(244, 67, 54, 0.2); border: 1px solid rgba(244, 67, 54, 0.3); color: #FFCDD2;">
                                     Cancel Order
                                 </button>
+                                <?php endif; ?>
+
+                                <?php if ($order['status'] === 'delivered'): ?>
+                                <a href="../reviews/add.php?order_id=<?php echo $order['id']; ?>" 
+                                   class="btn btn-primary" 
+                                   style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.9rem; display: inline-block; width: fit-content; margin-left: auto;">
+                                    ⭐ Review Items
+                                </a>
                                 <?php endif; ?>
                             </div>
                         </div>
