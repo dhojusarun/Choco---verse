@@ -17,8 +17,10 @@
                 </a>
                 <nav class="main-nav">
                     <a href="index.php" class="nav-link">🏠 Home</a>
-                    <a href="pages/about.php" class="nav-link">ℹ️ About</a>
+                    <a href="customer/products/browse.php" class="nav-link">🍫 Products</a>
                     <a href="pages/categories.php" class="nav-link">📂 Categories</a>
+                    <a href="customer/products/cart.php" class="nav-link">🛒 Cart</a>
+                    <a href="pages/about.php" class="nav-link">ℹ️ About</a>
                     <a href="pages/contact.php" class="nav-link">📞 Contact</a>
                 </nav>
                 <div class="header-actions">

@@ -1,30 +1,35 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'customer') {
-    header('Location: ../login.php');
-    exit;
-}
+// Optional login check - allow guests to view cart
+$customer_id = $_SESSION['user_id'] ?? null;
+$is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'customer';
 
 require_once '../../config/database.php';
 
-$customer_id = $_SESSION['user_id'];
 
-// Get customer wallet balance
-$wallet_stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
-$wallet_stmt->execute([$customer_id]);
-$wallet_balance = $wallet_stmt->fetchColumn();
 
-// Fetch cart items with product details
-$cart_stmt = $pdo->prepare("
-    SELECT c.*, p.name, p.price, p.image_url, p.stock, u.username as vendor_name, p.vendor_id
-    FROM cart c
-    JOIN products p ON c.product_id = p.id
-    JOIN users u ON p.vendor_id = u.id
-    WHERE c.customer_id = ?
-    ORDER BY c.created_at DESC
-");
-$cart_stmt->execute([$customer_id]);
-$cart_items = $cart_stmt->fetchAll();
+$wallet_balance = 0;
+if ($is_logged_in) {
+    // Get customer wallet balance
+    $wallet_stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
+    $wallet_stmt->execute([$customer_id]);
+    $wallet_balance = $wallet_stmt->fetchColumn();
+}
+
+$cart_items = [];
+if ($is_logged_in) {
+    // Fetch cart items with product details
+    $cart_stmt = $pdo->prepare("
+        SELECT c.*, p.name, p.price, p.image_url, p.stock, u.username as vendor_name, p.vendor_id
+        FROM cart c
+        JOIN products p ON c.product_id = p.id
+        JOIN users u ON p.vendor_id = u.id
+        WHERE c.customer_id = ?
+        ORDER BY c.created_at DESC
+    ");
+    $cart_stmt->execute([$customer_id]);
+    $cart_items = $cart_stmt->fetchAll();
+}
 
 // Calculate totals
 $subtotal = 0;
@@ -186,6 +191,11 @@ $total = $subtotal + $tax;
 <body>
     <?php 
     $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
+    if (!$is_logged_in) {
+        $customer_id = 0;
+        $wallet_balance = 0;
+        $username = "Guest";
+    }
     include $root . '/includes/customer_header.php'; 
     ?>
 
@@ -335,6 +345,10 @@ $total = $subtotal + $tax;
         }
         
         function proceedToCheckout() {
+            <?php if (!$is_logged_in): ?>
+                window.location.href = '../login.php';
+                return;
+            <?php endif; ?>
             if (!confirm('Proceed with checkout? This will create your order.')) return;
             
             const btn = event.target;

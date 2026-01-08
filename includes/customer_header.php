@@ -4,10 +4,13 @@
 // It will display navigation, wallet balance, and user menu
 
 // Fetch wallet balance if not already loaded
-if (!isset($wallet_balance)) {
+// Fetch wallet balance if not already loaded and user is logged in
+if (!isset($wallet_balance) && isset($customer_id) && $customer_id > 0) {
     $wallet_stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
     $wallet_stmt->execute([$customer_id]);
     $wallet_balance = $wallet_stmt->fetchColumn();
+} elseif (!isset($wallet_balance)) {
+    $wallet_balance = 0;
 }
 ?>
 <header class="site-header">
@@ -22,9 +25,10 @@ if (!isset($wallet_balance)) {
             <!-- Main Navigation -->
             <nav class="main-nav">
                 <a href="/project/Choco world/customer/dashboard.php" class="nav-link">🏠 Home</a>
-                <a href="/project/Choco world/pages/about.php" class="nav-link">ℹ️ About</a>
                 <a href="/project/Choco world/customer/products/browse.php" class="nav-link">🍫 Products</a>
                 <a href="/project/Choco world/pages/categories.php" class="nav-link">📂 Categories</a>
+                <a href="/project/Choco world/customer/products/cart.php" class="nav-link">🛒 Cart</a>
+                <a href="/project/Choco world/pages/about.php" class="nav-link">ℹ️ About</a>
                 <a href="/project/Choco world/pages/contact.php" class="nav-link">📞 Contact</a>
             </nav>
             
@@ -42,6 +46,7 @@ if (!isset($wallet_balance)) {
                     <span class="cart-badge" id="cart-count">0</span>
                 </a>
                 
+                <?php if (isset($customer_id) && $customer_id > 0): ?>
                 <!-- User Menu -->
                 <div class="user-menu">
                     <button class="user-menu-btn">
@@ -63,6 +68,9 @@ if (!isset($wallet_balance)) {
                         <a href="/project/Choco world/auth/logout.php" class="dropdown-item logout">🚪 Logout</a>
                     </div>
                 </div>
+                <?php else: ?>
+                <a href="/project/Choco world/customer/login.php" class="btn btn-primary" style="padding: 0.5rem 1.5rem;">Login</a>
+                <?php endif; ?>
             </div>
             
             <!-- Mobile Menu Toggle -->

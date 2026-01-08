@@ -1,21 +1,20 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'customer') {
-    header('Location: ../login.php');
-    exit;
-}
+// Optional login check - allow guests to browse
+$customer_id = $_SESSION['user_id'] ?? null;
+$is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'customer';
 
 require_once '../../config/database.php';
 
-$customer_id = $_SESSION['user_id'];
+
 
 // Fetch all active products with vendor info and ratings
 $products_stmt = $pdo->prepare("
     SELECT p.*, u.username as vendor_name,
            COALESCE(AVG(r.rating), 0) as avg_rating,
            COUNT(DISTINCT r.id) as review_count,
-           EXISTS(SELECT 1 FROM favorites f WHERE f.product_id = p.id AND f.customer_id = ?) as is_favorite,
-           EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) as in_cart
+           CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM favorites f WHERE f.product_id = p.id AND f.customer_id = ?) ELSE 0 END as is_favorite,
+           CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) ELSE 0 END as in_cart
     FROM products p
     JOIN users u ON p.vendor_id = u.id
     LEFT JOIN reviews r ON p.id = r.product_id
@@ -23,13 +22,16 @@ $products_stmt = $pdo->prepare("
     GROUP BY p.id
     ORDER BY p.created_at DESC
 ");
-$products_stmt->execute([$customer_id, $customer_id]);
+$products_stmt->execute([$customer_id, $customer_id, $customer_id, $customer_id]);
 $products = $products_stmt->fetchAll();
 
 // Get cart count
-$cart_count_stmt = $pdo->prepare("SELECT COUNT(*) FROM cart WHERE customer_id = ?");
-$cart_count_stmt->execute([$customer_id]);
-$cart_count = $cart_count_stmt->fetchColumn();
+$cart_count = 0;
+if ($is_logged_in) {
+    $cart_count_stmt = $pdo->prepare("SELECT COUNT(*) FROM cart WHERE customer_id = ?");
+    $cart_count_stmt->execute([$customer_id]);
+    $cart_count = $cart_count_stmt->fetchColumn();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -150,7 +152,21 @@ $cart_count = $cart_count_stmt->fetchColumn();
 <body>
     <?php 
     $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
-    include $root . '/includes/customer_header.php'; 
+    if ($is_logged_in) {
+        include $root . '/includes/customer_header.php';
+    } else {
+        // Simple guest header or just include the main site header if it's modular
+        // For now, let's include the customer_header but we need to handle its requirements
+        // Actually, customer_header.php expects $customer_id and $wallet_balance
+        // Let's check customer_header.php again.
+        
+        // If not logged in, we should probably show the index header style
+        // But for consistency let's mock the variables or use a guest-friendly version.
+        $customer_id = 0;
+        $wallet_balance = 0;
+        $username = "Guest";
+        include $root . '/includes/customer_header.php';
+    }
     ?>
 
     <div class="dashboard">
@@ -238,6 +254,10 @@ $cart_count = $cart_count_stmt->fetchColumn();
     
     <script>
         function addToCart(productId, btn) {
+            <?php if (!$is_logged_in): ?>
+                window.location.href = '../login.php';
+                return;
+            <?php endif; ?>
             fetch('add-to-cart.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -258,6 +278,10 @@ $cart_count = $cart_count_stmt->fetchColumn();
         }
         
         function toggleFavorite(productId, btn) {
+            <?php if (!$is_logged_in): ?>
+                window.location.href = '../login.php';
+                return;
+            <?php endif; ?>
             fetch('../favorites/toggle.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
