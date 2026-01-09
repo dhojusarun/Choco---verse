@@ -26,6 +26,7 @@ $user = $user_stmt->fetch();
             max-width: 800px;
             margin: 2rem auto;
         }
+
         .profile-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 2.5rem;
@@ -33,6 +34,7 @@ $user = $user_stmt->fetch();
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 2rem;
         }
+
         .wallet-card {
             background: var(--gradient-gold);
             color: var(--chocolate-dark);
@@ -41,21 +43,25 @@ $user = $user_stmt->fetch();
             text-align: center;
             margin-bottom: 2rem;
         }
+
         .wallet-amount {
             font-size: 3rem;
             font-weight: 700;
             margin: 1rem 0;
         }
+
         .info-row {
             display: flex;
             justify-content: space-between;
             padding: 1rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .info-label {
             color: var(--gold-light);
             font-weight: 500;
         }
+
         .info-value {
             color: var(--cream);
             font-weight: 600;

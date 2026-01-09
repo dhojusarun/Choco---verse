@@ -74,46 +74,20 @@ $success = isset($_GET['success']);
             background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 2rem;
             display: grid;
             grid-template-columns: 150px 1fr;
             gap: 2rem;
-            align-items: center;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .product-preview {
             width: 150px;
             height: 150px;
             object-fit: cover;
             border-radius: 15px;
         }
-        .rating-select {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .star-radio {
-            display: none;
-        }
-        .star-label {
-            font-size: 2rem;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.2);
-            transition: color 0.2s;
-        }
-        .star-radio:checked ~ .star-label,
-        .star-label:hover,
-        .star-label:hover ~ .star-label {
-            color: var(--gold);
-        }
-        /* RTL for star selection trick */
-        .rating-select {
-            flex-direction: row-reverse;
-            justify-content: flex-end;
-        }
-        .star-radio:checked ~ .star-label {
-            color: var(--gold);
-        }
+
         .review-textarea {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
@@ -124,6 +98,7 @@ $success = isset($_GET['success']);
             min-height: 100px;
             resize: vertical;
         }
+
         .status-pill {
             display: inline-block;
             padding: 0.3rem 0.8rem;
@@ -132,6 +107,31 @@ $success = isset($_GET['success']);
             background: rgba(76, 175, 80, 0.2);
             color: #A5D6A7;
             margin-bottom: 0.5rem;
+        }
+
+        .rating-select {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .star-radio {
+            display: none;
+        }
+
+        .star-label {
+            font-size: 2rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.2);
+            transition: color 0.2s;
+        }
+
+        .star-radio:checked ~ .star-label,
+        .star-label:hover,
+        .star-label:hover ~ .star-label {
+            color: var(--gold);
         }
     </style>
 </head>

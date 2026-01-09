@@ -141,91 +141,109 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
     <title>Order Details - Choco World</title>
     <link rel="stylesheet" href="../../css/style.css">
     <style>
-        .order-details {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-        }
         .details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
+
+        .detail-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .detail-section h3 {
             color: var(--gold);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
         }
+
         .detail-row {
-            margin-bottom: 0.8rem;
             display: flex;
             justify-content: space-between;
+            margin-bottom: 1rem;
         }
+
         .detail-label {
-            color: var(--gold-light);
+            opacity: 0.7;
             font-weight: 500;
         }
-        .detail-value {
-            color: var(--cream);
-        }
+
         .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        .items-table th {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--gold);
-            padding: 1rem;
-            text-align: left;
-        }
-        .items-table td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--cream);
-        }
-        .product-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .status-form {
-            background: rgba(212, 175, 55, 0.1);
-            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
-            border: 2px solid var(--gold);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        .items-table th {
+            text-align: left;
+            padding: 1.2rem;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+        }
+
+        .items-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .status-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .status-form select {
             width: 100%;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            border-radius: 10px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold);
             color: var(--cream);
-            font-size: 1rem;
-            margin: 1rem 0;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
         }
-        .status-form select:focus {
-            outline: none;
-            border-color: var(--gold);
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .items-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .detail-section {
+                padding: 1.5rem;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 0.3rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .detail-value {
+                font-weight: 600;
+            }
         }
-        .status-badge {
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-transform: capitalize;
-            display: inline-block;
-        }
-        .status-pending { background: rgba(255, 193, 7, 0.2); color: #FFE082; }
-        .status-processing { background: rgba(33, 150, 243, 0.2); color: #90CAF9; }
-        .status-shipped { background: rgba(156, 39, 176, 0.2); color: #CE93D8; }
-        .status-delivered { background: rgba(76, 175, 80, 0.2); color: #A5D6A7; }
-        .status-cancelled { background: rgba(244, 67, 54, 0.2); color: #FFCDD2; }
     </style>
 </head>
 

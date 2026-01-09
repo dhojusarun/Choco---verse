@@ -40,6 +40,7 @@ $products = $products_stmt->fetchAll();
             gap: 2rem;
             margin-top: 2rem;
         }
+
         .product-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
@@ -48,50 +49,54 @@ $products = $products_stmt->fetchAll();
             transition: var(--transition-smooth);
             position: relative;
         }
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
-            border-color: var(--gold);
-        }
+
         .product-image {
             width: 100%;
             height: 220px;
             object-fit: cover;
         }
+
         .product-info {
             padding: 1.5rem;
         }
+
         .product-name {
             color: var(--gold);
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
+
         .vendor-name {
             color: var(--cream);
             opacity: 0.7;
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
+
         .product-rating {
             color: var(--gold);
             margin-bottom: 0.8rem;
         }
+
         .product-price {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--gold);
             margin: 1rem 0;
         }
+
         .product-actions {
             display: flex;
             gap: 0.5rem;
         }
+
         .btn-small {
             padding: 0.7rem 1.2rem;
             font-size: 0.9rem;
             flex: 1;
         }
+
         .favorite-btn {
             position: absolute;
             top: 1rem;
@@ -106,6 +111,7 @@ $products = $products_stmt->fetchAll();
             transition: var(--transition-smooth);
             backdrop-filter: blur(10px);
         }
+
         .favorite-btn:hover {
             transform: scale(1.1);
             background: rgba(244, 67, 54, 1);

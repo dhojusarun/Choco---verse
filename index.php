@@ -31,6 +31,23 @@ $is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'cu
                 <div class="header-actions">
                     <a href="customer/login.php" class="btn btn-primary" style="padding: 0.5rem 1.5rem;">Login</a>
                 </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div class="mobile-nav" id="mobileNav">
+                <a href="index.php" class="mobile-nav-link">🏠 Home</a>
+                <a href="customer/products/browse.php" class="mobile-nav-link">🍫 Products</a>
+                <a href="pages/categories.php" class="mobile-nav-link">📂 Categories</a>
+                <a href="pages/about.php" class="mobile-nav-link">ℹ️ About</a>
+                <a href="pages/contact.php" class="mobile-nav-link">📞 Contact</a>
+                <a href="customer/login.php" class="mobile-nav-link">🔑 Login</a>
             </div>
         </div>
     </header>
@@ -52,6 +69,11 @@ $is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'cu
     include 'includes/footer.php'; 
     ?>
     <script>
+    function toggleMobileMenu() {
+        const mobileNav = document.getElementById('mobileNav');
+        mobileNav.classList.toggle('active');
+    }
+
     function updateCartCount() {
         fetch('customer/products/cart.php?count=true')
             .then(response => response.json())

@@ -23,49 +23,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
         .contact-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
+            grid-template-columns: 350px 1fr;
+            gap: 4rem;
             margin-top: 2rem;
         }
+
         .contact-info-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .info-item {
-            margin-bottom: 2rem;
-        }
-        .info-item h4 {
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 3rem;
+            padding: 2.5rem;
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
         }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+
+        .info-item {
+            margin-bottom: 2.5rem;
         }
-        textarea.form-control {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            border-radius: 15px;
-            color: var(--cream);
-            padding: 1rem;
-            min-height: 150px;
-            font-family: var(--font-body);
+
+        .info-item:last-child {
+            margin-bottom: 0;
         }
+
+        .info-item h4 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item p {
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 968px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            .contact-grid { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
+            .contact-form {
+                padding: 1.5rem;
+            }
+            .contact-info-card {
+                padding: 1.5rem;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .form-group {
+                margin-bottom: 1rem !important;
+            }
         }
     </style>
 </head>

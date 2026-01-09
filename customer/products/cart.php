@@ -64,12 +64,14 @@ $total = $subtotal + $tax;
             gap: 2rem;
             margin-top: 2rem;
         }
+
         .cart-items {
             background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .cart-item {
             display: grid;
             grid-template-columns: 120px 1fr auto;
@@ -78,34 +80,41 @@ $total = $subtotal + $tax;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             align-items: center;
         }
+
         .cart-item:last-child {
             border-bottom: none;
         }
+
         .item-image {
             width: 120px;
             height: 120px;
             object-fit: cover;
             border-radius: 15px;
         }
+
         .item-details h3 {
             color: var(--gold);
             margin-bottom: 0.5rem;
         }
+
         .item-vendor {
             opacity: 0.7;
             margin-bottom: 0.5rem;
         }
+
         .item-price {
             font-size: 1.3rem;
             color: var(--gold);
             font-weight: 600;
         }
+
         .item-actions {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             align-items: flex-end;
         }
+
         .quantity-control {
             display: flex;
             align-items: center;
@@ -114,6 +123,7 @@ $total = $subtotal + $tax;
             padding: 0.5rem;
             border-radius: 10px;
         }
+
         .qty-btn {
             width: 35px;
             height: 35px;
@@ -125,6 +135,7 @@ $total = $subtotal + $tax;
             font-size: 1.2rem;
             font-weight: bold;
         }
+
         .qty-input {
             width: 60px;
             text-align: center;
@@ -134,6 +145,7 @@ $total = $subtotal + $tax;
             font-size: 1.1rem;
             font-weight: 600;
         }
+
         .remove-btn {
             background: rgba(244, 67, 54, 0.2);
             color: #FFCDD2;
@@ -143,9 +155,11 @@ $total = $subtotal + $tax;
             cursor: pointer;
             transition: var(--transition-smooth);
         }
+
         .remove-btn:hover {
             background: rgba(244, 67, 54, 0.3);
         }
+
         .cart-summary {
             background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
@@ -155,6 +169,7 @@ $total = $subtotal + $tax;
             position: sticky;
             top: 2rem;
         }
+
         .summary-row {
             display: flex;
             justify-content: space-between;
@@ -162,32 +177,38 @@ $total = $subtotal + $tax;
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .summary-row:last-of-type {
             border-bottom: 2px solid var(--gold);
             padding-bottom: 1.5rem;
             margin-bottom: 1.5rem;
         }
+
         .summary-total {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--gold);
         }
+
         .checkout-btn {
             width: 100%;
             padding: 1.2rem;
             font-size: 1.1rem;
             margin-top: 1rem;
         }
+
         .empty-cart {
             text-align: center;
             padding: 4rem 2rem;
             opacity: 0.7;
         }
+
         .payment-methods {
             margin-top: 1.5rem;
             padding-top: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .payment-option {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -197,25 +218,31 @@ $total = $subtotal + $tax;
             cursor: pointer;
             transition: var(--transition-smooth);
         }
+
         .payment-option:hover {
             border-color: var(--gold);
             background: rgba(255, 255, 255, 0.06);
         }
+
         .payment-option.active {
             border-color: var(--gold);
             background: rgba(212, 175, 55, 0.08);
         }
+
         .payment-option input[type="radio"] {
             display: none;
         }
+
         .option-header {
             display: flex;
             align-items: center;
             gap: 0.8rem;
         }
+
         .option-icon {
             font-size: 1.2rem;
         }
+
         .sub-options {
             display: none;
             margin-top: 0.8rem;
@@ -223,9 +250,11 @@ $total = $subtotal + $tax;
             border-left: 1px solid var(--gold);
             margin-left: 0.5rem;
         }
+
         .payment-option.active .sub-options {
             display: block;
         }
+
         .payment-form {
             display: none;
             background: rgba(0, 0, 0, 0.3);
@@ -234,9 +263,11 @@ $total = $subtotal + $tax;
             margin-top: 0.8rem;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .form-group {
             margin-bottom: 0.8rem;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 0.3rem;
@@ -244,6 +275,7 @@ $total = $subtotal + $tax;
             opacity: 0.8;
             color: var(--gold);
         }
+
         .form-group input {
             width: 100%;
             padding: 0.6rem;
@@ -253,17 +285,20 @@ $total = $subtotal + $tax;
             color: var(--cream);
             font-size: 0.9rem;
         }
+
         .form-group input:focus {
             border-color: var(--gold);
             outline: none;
             background: rgba(255, 255, 255, 0.05);
         }
+
         .sub-option {
             margin-bottom: 0.6rem;
             display: flex;
             flex-direction: column;
             gap: 0.3rem;
         }
+
         .sub-option-label {
             display: flex;
             align-items: center;
@@ -273,24 +308,69 @@ $total = $subtotal + $tax;
             transition: opacity 0.2s;
             font-size: 0.95rem;
         }
+
         .sub-option-label:hover {
             opacity: 1;
         }
+
         .sub-option input[type="radio"] {
             display: inline-block;
         }
+
         @media (max-width: 968px) {
             .cart-container {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
+
+            .cart-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cart-items {
+                padding: 1rem;
+            }
+
             .cart-item {
-                grid-template-columns: 100px 1fr;
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+                padding: 1rem;
             }
+
+            .item-image {
+                width: 80px;
+                height: 80px;
+            }
+
             .item-actions {
                 grid-column: 1 / -1;
-                flex-direction: row;
-                justify-content: space-between;
-                margin-top: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+
+            .quantity-control {
+                justify-content: center;
+            }
+
+            .remove-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .item-image {
+                margin: 0 auto;
+                width: 120px;
+                height: 120px;
             }
         }
     </style>

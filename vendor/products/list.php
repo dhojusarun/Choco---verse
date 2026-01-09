@@ -33,81 +33,96 @@ $products = $stmt->fetchAll();
     <link rel="stylesheet" href="../../css/style.css">
     <style>
         .product-table {
-            width: 100%;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .product-table table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .product-table th {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--gold);
-            padding: 1rem;
             text-align: left;
-            font-weight: 600;
+            padding: 1.2rem;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
         }
+
         .product-table td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--cream);
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .product-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .product-img {
-            width: 60px;
-            height: 60px;
+
+        .vendor-product-img {
+            width: 80px;
+            height: 80px;
             object-fit: cover;
             border-radius: 10px;
         }
-        .status-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+
         .status-active {
             background: rgba(76, 175, 80, 0.2);
             color: #A5D6A7;
         }
+
         .status-inactive {
             background: rgba(244, 67, 54, 0.2);
             color: #FFCDD2;
         }
-        .action-btn {
-            padding: 0.4rem 1rem;
-            margin: 0 0.2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-block;
-            transition: var(--transition-smooth);
-        }
+
         .btn-edit {
-            background: rgba(33, 150, 243, 0.2);
+            background: rgba(33, 150, 243, 0.1);
             color: #90CAF9;
-            border: 1px solid rgba(33, 150, 243, 0.3);
+            border: 1px solid #90CAF9;
         }
+
         .btn-edit:hover {
-            background: rgba(33, 150, 243, 0.3);
+            background: #90CAF9;
+            color: white;
         }
+
         .btn-delete {
-            background: rgba(244, 67, 54, 0.2);
-            color: #FFCDD2;
-            border: 1px solid rgba(244, 67, 54, 0.3);
+            background: rgba(244, 67, 54, 0.1);
+            color: #EF5350;
+            border: 1px solid #EF5350;
         }
+
         .btn-delete:hover {
-            background: rgba(244, 67, 54, 0.3);
+            background: #EF5350;
+            color: white;
         }
+
         .no-products {
             text-align: center;
-            padding: 3rem;
-            color: var(--cream);
-            opacity: 0.7;
+            padding: 5rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .product-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .product-table th, .product-table td {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .vendor-product-img {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
@@ -150,7 +165,7 @@ $products = $stmt->fetchAll();
                                 <td>
                                     <img src="../../<?php echo htmlspecialchars($product['image_url']); ?>" 
                                          alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                                         class="product-img"
+                                         class="vendor-product-img"
                                          onerror="this.src='../../images/products/default-chocolate.jpg'">
                                 </td>
                                 <td>

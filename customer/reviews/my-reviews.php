@@ -33,57 +33,61 @@ $reviews = $reviews_stmt->fetchAll();
             gap: 2rem;
             margin-top: 2rem;
         }
+
         .product-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: var(--transition-smooth);
-            display: flex;
-            flex-direction: column;
+            position: relative;
         }
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
-            border-color: var(--gold);
-        }
+
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
         }
+
         .product-info {
             padding: 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
+
         .product-name {
             color: var(--gold);
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-        .review-rating {
-            color: var(--gold);
-            font-size: 1.1rem;
+
+        .review-date {
+            opacity: 0.5;
+            font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
-        .review-date {
-            font-size: 0.8rem;
-            opacity: 0.6;
-            margin-bottom: 1rem;
+
+        .review-rating {
+            color: var(--gold);
+            margin-bottom: 0.8rem;
         }
+
         .review-comment {
-            font-style: italic;
-            line-height: 1.5;
-            color: var(--cream);
+            line-height: 1.6;
             opacity: 0.9;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-top: auto;
-            border-left: 3px solid var(--gold);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .product-image {
+                height: 180px;
+            }
+            .product-info {
+                padding: 1rem;
+            }
         }
     </style>
 </head>

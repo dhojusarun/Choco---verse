@@ -31,42 +31,64 @@ $categories = [
             gap: 2rem;
             margin-top: 2rem;
         }
+
         .category-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 2.5rem;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            transition: var(--transition-smooth);
+            border-radius: 20px;
             text-decoration: none;
-            color: inherit;
+            color: var(--cream);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-smooth);
+            text-align: center;
         }
+
         .category-card:hover {
             transform: translateY(-10px);
             border-color: var(--gold);
-            background: rgba(212, 175, 55, 0.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
+
         .category-icon {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             display: block;
         }
+
         .category-card h3 {
             color: var(--gold);
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
+
+        .category-card p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
         .category-count {
             display: inline-block;
-            background: var(--gold);
-            color: var(--chocolate-dark);
-            padding: 0.3rem 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
             border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            margin-top: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .category-card {
+                padding: 1.5rem;
+            }
+            .category-icon {
+                font-size: 2.5rem;
+            }
+            .category-card h3 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>

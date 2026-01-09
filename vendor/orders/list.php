@@ -83,116 +83,94 @@ $stats = $stats_stmt->fetch();
     <title>Orders - Choco World</title>
     <link rel="stylesheet" href="../../css/style.css">
     <style>
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin: 0.5rem 0;
-        }
-        .stat-label {
-            color: var(--cream);
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-        .order-table {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .order-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .order-table th {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--gold);
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-        }
-        .order-table td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--cream);
-        }
-        .order-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .status-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: capitalize;
-        }
-        .status-pending { background: rgba(255, 193, 7, 0.2); color: #FFE082; }
-        .status-processing { background: rgba(33, 150, 243, 0.2); color: #90CAF9; }
-        .status-shipped { background: rgba(156, 39, 176, 0.2); color: #CE93D8; }
-        .status-delivered { background: rgba(76, 175, 80, 0.2); color: #A5D6A7; }
-        .status-cancelled { background: rgba(244, 67, 54, 0.2); color: #FFCDD2; }
-        .action-btn {
-            padding: 0.5rem 1.2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            background: rgba(33, 150, 243, 0.2);
-            color: #90CAF9;
-            border: 1px solid rgba(33, 150, 243, 0.3);
-            transition: var(--transition-smooth);
-        }
-        .action-btn:hover {
-            background: rgba(33, 150, 243, 0.3);
-        }
         .status-tabs {
             display: flex;
             gap: 1rem;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
         }
+
         .tab {
             padding: 0.8rem 1.5rem;
             background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 50px;
             color: var(--cream);
             text-decoration: none;
-            transition: var(--transition-smooth);
+            white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-smooth);
         }
-        .tab:hover {
-            border-color: var(--gold);
-            background: rgba(255, 255, 255, 0.1);
-        }
+
         .tab.active {
-            background: var(--gradient-gold);
+            background: var(--gold);
             color: var(--chocolate-dark);
             border-color: var(--gold);
         }
+
         .tab-count {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
         }
-        .tab.active .tab-count {
-            background: rgba(0, 0, 0, 0.2);
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-table {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .order-table th {
+            text-align: left;
+            padding: 1.2rem;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+        }
+
+        .order-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .action-btn {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            border: 1px solid var(--gold);
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .action-btn:hover {
+            background: var(--gold);
+            color: var(--chocolate-dark);
         }
     </style>
 </head>

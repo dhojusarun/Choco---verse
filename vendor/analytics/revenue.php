@@ -52,57 +52,63 @@ foreach ($transactions as $transaction) {
     <style>
         .revenue-summary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
+
         .revenue-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 20px;
+            text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        .revenue-label {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .revenue-amount {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--gold);
-            margin: 1rem 0;
         }
-        .revenue-label {
-            color: var(--cream);
-            opacity: 0.8;
-        }
+
         .transactions-table {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .transactions-table table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .transactions-table th {
-            background: rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.1);
             color: var(--gold);
-            padding: 1rem;
+            padding: 1.2rem 1rem;
             text-align: left;
             font-weight: 600;
         }
+
         .transactions-table td {
-            padding: 1rem;
+            padding: 1.2rem 1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--cream);
         }
+
         .transactions-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
         }
-        .status-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-        }
-        .status-delivered { background: rgba(76, 175, 80, 0.2); color: #A5D6A7; }
-        .status-pending, .status-processing, .status-shipped { background: rgba(255, 193, 7, 0.2); color: #FFE082; }
     </style>
 </head>
 

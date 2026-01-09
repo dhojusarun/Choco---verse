@@ -68,56 +68,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../css/style.css">
     <style>
         .settings-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .settings-section {
             background: rgba(255, 255, 255, 0.05);
             padding: 2.5rem;
-            border-radius: 20px;
+            border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 900px;
-            margin: 2rem auto;
+            margin-bottom: 2rem;
         }
-        .settings-section {
-            margin-bottom: 2.5rem;
-        }
+
         .settings-section h3 {
             color: var(--gold);
             margin-bottom: 1.5rem;
             font-size: 1.4rem;
-            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
         }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .form-full {
-            grid-column: 1 / -1;
-        }
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-            font-family: var(--font-body);
-        }
+
         .info-card {
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(0, 0, 0, 0.2);
             padding: 1.5rem;
             border-radius: 15px;
-            border: 2px solid var(--gold);
-            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.8rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
         .info-label {
-            color: var(--gold-light);
-            font-weight: 500;
+            opacity: 0.7;
         }
+
         .info-value {
-            color: var(--cream);
             font-weight: 600;
+            color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            .settings-section {
+                padding: 1.5rem;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .form-group {
+                min-width: 100%;
+            }
         }
     </style>
 </head>

@@ -77,61 +77,103 @@ $status_distribution = $status_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     <style>
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
+
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 1.8rem;
-            border-radius: 15px;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: var(--transition-smooth);
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
             border-color: var(--gold);
         }
+
         .stat-icon {
             font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
+
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--gold);
-            margin: 0.5rem 0;
+            margin-bottom: 0.5rem;
         }
+
         .stat-label {
-            color: var(--cream);
-            opacity: 0.8;
-            font-size: 1rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
         .chart-container {
             background: rgba(255, 255, 255, 0.05);
             padding: 2rem;
             border-radius: 20px;
-            border:1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
         }
+
         .chart-container h3 {
             color: var(--gold);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
+
         .top-products {
             background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .product-item {
             display: flex;
             justify-content: space-between;
-            padding: 1rem;
+            align-items: center;
+            padding: 1.5rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .product-item:last-child {
             border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .chart-container {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+
+            .top-products {
+                padding: 1.5rem;
+            }
+
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .product-item div:last-child {
+                text-align: left;
+            }
         }
     </style>
 </head>

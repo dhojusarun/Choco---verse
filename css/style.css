@@ -55,6 +55,12 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 .btn {
@@ -456,31 +462,96 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
     .hero h1 {
-        font-size: 3rem;
+        font-size: 3.5rem;
+    }
+
+    .page-hero h1 {
+        font-size: 2.8rem;
+    }
+
+    .main-nav {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .header-actions .wallet-display {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
     }
 
     .hero p {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .cta-buttons {
         flex-direction: column;
-        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .cta-buttons .btn {
+        width: 100%;
     }
 
     .auth-container {
         padding: var(--spacing-md);
+        margin: 1rem;
+        width: calc(100% - 2rem);
     }
 
     .dashboard-header {
         flex-direction: column;
         text-align: center;
+        padding: 1.5rem;
     }
 
     .dashboard-title h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .page-hero {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .page-hero h1 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-logo span {
+        display: none;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
     }
 }
 
@@ -838,11 +909,12 @@ body {
     align-items: center;
     gap: 0.5rem;
     background: rgba(212, 175, 55, 0.15);
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 50px;
     border: 1px solid var(--gold);
     color: var(--gold-light);
     font-weight: 600;
+    font-size: 0.85rem;
 }
 
 .header-icon-btn {

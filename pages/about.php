@@ -16,6 +16,18 @@ $customer_id = $is_logged_in ? $_SESSION['user_id'] : null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Choco World</title>
     <link rel="stylesheet" href="../css/style.css">
+    <style>
+        @media (max-width: 968px) {
+            .about-content-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+                text-align: center;
+            }
+            .about-content-grid img {
+                order: -1;
+            }
+        }
+    </style>
 </head>
 <body>
     <?php 
@@ -57,7 +69,7 @@ $customer_id = $is_logged_in ? $_SESSION['user_id'] : null;
 
     <div class="container">
         <div class="dashboard-content">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 4rem;">
+            <div class="about-content-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 4rem;">
                 <div>
                     <h2 style="font-family: var(--font-heading); color: var(--gold); margin-bottom: 1.5rem;">Passion for Perfection</h2>
                     <p style="margin-bottom: 1.5rem; line-height: 1.8;">At Choco World, we believe chocolate is more than just a treat—it's an experience. Founded in the heart of Kathmandu, our mission is to bring together the finest artisan chocolatiers and chocolate lovers in one premium marketplace.</p>
