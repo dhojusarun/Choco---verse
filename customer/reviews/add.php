@@ -68,70 +68,13 @@ $success = isset($_GET['success']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Items - Choco World</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <style>
         .review-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
             display: grid;
             grid-template-columns: 150px 1fr;
             gap: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .product-preview {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 15px;
-        }
-
-        .review-textarea {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: var(--cream);
-            padding: 1rem;
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .status-pill {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            background: rgba(76, 175, 80, 0.2);
-            color: #A5D6A7;
-            margin-bottom: 0.5rem;
-        }
-
-        .rating-select {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-direction: row-reverse;
-            justify-content: flex-end;
-        }
-
-        .star-radio {
-            display: none;
-        }
-
-        .star-label {
-            font-size: 2rem;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.2);
-            transition: color 0.2s;
-        }
-
-        .star-radio:checked ~ .star-label,
-        .star-label:hover,
-        .star-label:hover ~ .star-label {
-            color: var(--gold);
         }
     </style>
 </head>

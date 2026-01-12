@@ -32,91 +32,9 @@ $products = $products_stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Favorites - Choco World</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition-smooth);
-            position: relative;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-name {
-            color: var(--gold);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .vendor-name {
-            color: var(--cream);
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .product-rating {
-            color: var(--gold);
-            margin-bottom: 0.8rem;
-        }
-
-        .product-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin: 1rem 0;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-small {
-            padding: 0.7rem 1.2rem;
-            font-size: 0.9rem;
-            flex: 1;
-        }
-
-        .favorite-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(244, 67, 54, 0.8);
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            backdrop-filter: blur(10px);
-        }
-
-        .favorite-btn:hover {
-            transform: scale(1.1);
-            background: rgba(244, 67, 54, 1);
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/products.css">
 </head>
 <body>
     <?php 

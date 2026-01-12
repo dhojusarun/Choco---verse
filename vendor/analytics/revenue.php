@@ -48,68 +48,8 @@ foreach ($transactions as $transaction) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revenue - Choco World</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        .revenue-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .revenue-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .revenue-label {
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .revenue-amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--gold);
-        }
-
-        .transactions-table {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            margin-top: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .transactions-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .transactions-table th {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--gold);
-            padding: 1.2rem 1rem;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        .transactions-table td {
-            padding: 1.2rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--cream);
-        }
-
-        .transactions-table tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
 </head>
 
     <?php

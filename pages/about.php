@@ -15,19 +15,9 @@ $customer_id = $is_logged_in ? $_SESSION['user_id'] : null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Choco World</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        @media (max-width: 968px) {
-            .about-content-grid {
-                grid-template-columns: 1fr !important;
-                gap: 2rem !important;
-                text-align: center;
-            }
-            .about-content-grid img {
-                order: -1;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
     <?php 

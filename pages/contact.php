@@ -19,75 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Choco World</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 4rem;
-            margin-top: 2rem;
-        }
-
-        .contact-info-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2.5rem;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            height: fit-content;
-        }
-
-        .info-item {
-            margin-bottom: 2.5rem;
-        }
-
-        .info-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-item h4 {
-            color: var(--gold);
-            font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-item p {
-            line-height: 1.8;
-            opacity: 0.9;
-        }
-
-        .contact-form {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 3rem;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        @media (max-width: 968px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .contact-form {
-                padding: 1.5rem;
-            }
-            .contact-info-card {
-                padding: 1.5rem;
-            }
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            .form-group {
-                margin-bottom: 1rem !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
     <?php 

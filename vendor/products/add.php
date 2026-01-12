@@ -66,72 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product - Choco World</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <style>
-        .product-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 3rem;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .file-input-label {
-            display: block;
-            padding: 2rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 2px dashed var(--gold);
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .file-input-label:hover {
-            background: rgba(212, 175, 55, 0.2);
-        }
-
-        #image {
-            display: none;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-        }
-
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        @media (max-width: 768px) {
-            .product-form {
-                padding: 1.5rem;
-                border-radius: 20px;
-            }
-
-            .form-group {
-                min-width: 100%;
-            }
-
-            .checkbox-group {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-        }
+        #image { display: none; }
     </style>
 </head>
 

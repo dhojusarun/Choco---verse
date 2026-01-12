@@ -20,53 +20,8 @@ $user = $user_stmt->fetch();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Choco World</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        .profile-container {
-            max-width: 800px;
-            margin: 2rem auto;
-        }
-
-        .profile-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2.5rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .wallet-card {
-            background: var(--gradient-gold);
-            color: var(--chocolate-dark);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .wallet-amount {
-            font-size: 3rem;
-            font-weight: 700;
-            margin: 1rem 0;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .info-label {
-            color: var(--gold-light);
-            font-weight: 500;
-        }
-
-        .info-value {
-            color: var(--cream);
-            font-weight: 600;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
 </head>
 <body>
     <?php 
@@ -86,12 +41,11 @@ $user = $user_stmt->fetch();
             
             <div class="profile-container">
                 <div class="wallet-card">
-                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">💰</div>
-                    <h2 style="margin: 0; font-size: 1.2rem;">Wallet Balance</h2>
-                    <div class="wallet-amount">$<?php echo number_format($user['wallet_balance'], 2); ?></div>
-                    <p style="margin: 0; opacity: 0.8;">
-                        Available for purchases and refunds
-                    </p>
+                    <div class="wallet-icon">💰</div>
+                    <div class="wallet-info">
+                        <h2 class="wallet-title">Wallet Balance</h2>
+                        <div class="wallet-amount">$<?php echo number_format($user['wallet_balance'], 2); ?></div>
+                    </div>
                 </div>
                 
                 <div class="profile-card">

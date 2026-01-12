@@ -25,71 +25,8 @@ $reviews = $reviews_stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Reviews - Choco World</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition-smooth);
-            position: relative;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-name {
-            color: var(--gold);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .review-date {
-            opacity: 0.5;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .review-rating {
-            color: var(--gold);
-            margin-bottom: 0.8rem;
-        }
-
-        .review-comment {
-            line-height: 1.6;
-            opacity: 0.9;
-            font-style: italic;
-        }
-
-        @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            .product-image {
-                height: 180px;
-            }
-            .product-info {
-                padding: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
 </head>
 <body>
     <?php 

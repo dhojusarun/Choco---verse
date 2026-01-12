@@ -8,7 +8,8 @@ $is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'cu
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choco World - Premium Chocolate Experience</title>
     <meta name="description" content="Welcome to Choco World - Your premium destination for chocolate excellence">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
     <header class="site-header">
