@@ -224,5 +224,9 @@ $orders = $orders_stmt->fetchAll();
             });
         }
     </script>
+    <?php 
+    $logo_path = '../../images/logo.png';
+    include '../../includes/footer.php'; 
+    ?>
 </body>
 </html>

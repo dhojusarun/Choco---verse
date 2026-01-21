@@ -25,22 +25,6 @@ $stats_stmt = $pdo->prepare("
 $stats_stmt->execute([$vendor_id, $vendor_id]);
 $stats = $stats_stmt->fetch();
 
-// Get monthly revenue (last 6 months)
-$monthly_stmt = $pdo->prepare("
-    SELECT 
-        DATE_FORMAT(o.created_at, '%Y-%m') as month,
-        SUM(oi.subtotal) as revenue
-    FROM orders o
-    JOIN order_items oi ON o.id = oi.order_id
-    WHERE oi.vendor_id = ? 
-        AND o.created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
-        AND o.status != 'cancelled'
-    GROUP BY DATE_FORMAT(o.created_at, '%Y-%m')
-    ORDER BY month ASC
-");
-$monthly_stmt->execute([$vendor_id]);
-$monthly_revenue = $monthly_stmt->fetchAll();
-
 // Get top selling products
 $top_products_stmt = $pdo->prepare("
     SELECT p.name, SUM(oi.quantity) as total_sold, SUM(oi.subtotal) as revenue
@@ -113,11 +97,7 @@ $status_distribution = $status_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
                         <div class="stat-label">Average Rating</div>
                     </div>
                 </div>
-                
-                <div class="chart-container">
-                    <h3>📈 Revenue Trend (Last 6 Months)</h3>
-                    <canvas id="revenueChart" height="80"></canvas>
-                </div>
+
                 
                 <div class="top-products">
                     <h3 style="color: var(--gold); margin-bottom: 1.5rem;">🏆 Top Selling Products</h3>
@@ -142,68 +122,7 @@ $status_distribution = $status_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
             </div>
         </div>
     </div>
-    
-    <script>
-        // Revenue Chart
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        const revenueData = <?php echo json_encode($monthly_revenue); ?>;
-        
-        const labels = revenueData.map(item => {
-            const [year, month] = item.month.split('-');
-            return new Date(year, month - 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-        });
-        const data = revenueData.map(item => parseFloat(item.revenue));
-        
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Revenue ($)',
-                    data: data,
-                    borderColor: '#D4AF37',
-                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#FFF8E7',
-                            font: { size: 14 }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#FFF8E7',
-                            callback: function(value) {
-                                return '$' + value.toFixed(2);
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: '#FFF8E7'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
-                    }
-                }
-            }
-        });
-    </script>
+
     
     <?php 
     $logo_path = '../../images/logo.png';
