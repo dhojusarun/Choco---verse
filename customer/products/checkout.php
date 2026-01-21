@@ -51,8 +51,36 @@ try {
     }
     $total_amount = $total_amount * 1.1; // Add 10% tax
     
+    
     // Check if customer has sufficient wallet balance (only for online payment)
     if ($payment_method === 'online') {
+        // Verify that payment was verified with code
+        if (!isset($_SESSION['payment_verified']) || $_SESSION['payment_verified'] !== true) {
+            $pdo->rollBack();
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Payment verification required. Please verify your payment with the code sent to you.',
+                'verification_required' => true
+            ]);
+            exit;
+        }
+        
+        // Check if verification is still valid (within 2 minutes of verification)
+        if (isset($_SESSION['payment_verified_at'])) {
+            $verification_age = time() - $_SESSION['payment_verified_at'];
+            if ($verification_age > 120) { // 2 minutes
+                unset($_SESSION['payment_verified']);
+                unset($_SESSION['payment_verified_at']);
+                $pdo->rollBack();
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Payment verification expired. Please verify again.',
+                    'verification_expired' => true
+                ]);
+                exit;
+            }
+        }
+        
         $wallet_check_stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
         $wallet_check_stmt->execute([$customer_id]);
         $wallet_balance = $wallet_check_stmt->fetchColumn();
@@ -72,10 +100,15 @@ try {
         ");
         $deduct_wallet_stmt->execute([$total_amount, $customer_id]);
         
+        // Clear verification flags after successful payment
+        unset($_SESSION['payment_verified']);
+        unset($_SESSION['payment_verified_at']);
+        
         $order_status = 'processing'; // Paid orders start as processing
     } else {
         $order_status = 'pending'; // COD orders start as pending
     }
+
     
     // Create order
     $order_stmt = $pdo->prepare("

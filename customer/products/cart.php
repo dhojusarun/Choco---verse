@@ -267,7 +267,46 @@ $total = $subtotal + $tax;
         </div>
     </div>
     
+    <!-- Verification Modal -->
+    <div class="verification-modal" id="verificationModal">
+        <div class="verification-content">
+            <div class="verification-header">
+                <h2>🔐 Payment Verification</h2>
+                <p>Enter the verification code to complete your payment</p>
+            </div>
+            
+            <div class="verification-code-display">
+                <small>Your verification code is:</small>
+                <div class="code" id="displayedCode">------</div>
+                <small>In production, this would be sent via SMS/Email</small>
+            </div>
+            
+            <div class="verification-error" id="verificationError"></div>
+            
+            <div class="verification-input-group">
+                <label for="verificationCodeInput">Enter Verification Code</label>
+                <input 
+                    type="text" 
+                    id="verificationCodeInput" 
+                    maxlength="6" 
+                    placeholder="000000"
+                    autocomplete="off"
+                >
+            </div>
+            
+            <div class="verification-timer" id="verificationTimer">
+                Code expires in: <span id="timerDisplay">5:00</span>
+            </div>
+            
+            <div class="verification-actions">
+                <button class="cancel-verify-btn" onclick="closeVerificationModal()">Cancel</button>
+                <button class="verify-btn" id="verifyButton" onclick="submitVerificationCode()">Verify & Pay</button>
+            </div>
+        </div>
+    </div>
+    
     <script>
+
         function updateQuantity(cartId, change, maxStock) {
             const qtyInput = document.getElementById('qty-' + cartId);
             let newQty = parseInt(qtyInput.value) + change;
@@ -360,6 +399,9 @@ $total = $subtotal + $tax;
             }
         }
 
+        let verificationTimer = null;
+        let verificationCode = null;
+        
         function proceedToCheckout() {
             <?php if (!$is_logged_in): ?>
                 window.location.href = '../login.php';
@@ -393,8 +435,139 @@ $total = $subtotal + $tax;
                         return;
                     }
                 }
+                
+                // For online payments, show verification modal
+                showVerificationModal(paymentMethod, subMethod);
+            } else {
+                // For COD, proceed directly
+                processCheckout(paymentMethod, subMethod);
             }
-
+        }
+        
+        function showVerificationModal(paymentMethod, subMethod) {
+            // Generate verification code
+            fetch('generate_verification_code.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    verificationCode = data.code;
+                    document.getElementById('displayedCode').textContent = data.code;
+                    document.getElementById('verificationModal').classList.add('active');
+                    document.getElementById('verificationCodeInput').value = '';
+                    document.getElementById('verificationCodeInput').focus();
+                    hideVerificationError();
+                    
+                    // Start countdown timer
+                    startVerificationTimer(data.expires_in);
+                } else {
+                    alert('Failed to generate verification code. Please try again.');
+                }
+            })
+            .catch(error => {
+                alert('Error generating verification code: ' + error);
+            });
+        }
+        
+        function startVerificationTimer(seconds) {
+            let remaining = seconds;
+            const timerDisplay = document.getElementById('timerDisplay');
+            const timerElement = document.getElementById('verificationTimer');
+            
+            // Clear any existing timer
+            if (verificationTimer) {
+                clearInterval(verificationTimer);
+            }
+            
+            verificationTimer = setInterval(() => {
+                remaining--;
+                
+                const minutes = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerDisplay.textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
+                
+                // Warning when less than 1 minute
+                if (remaining <= 60) {
+                    timerElement.classList.add('warning');
+                }
+                
+                // Expired
+                if (remaining <= 0) {
+                    clearInterval(verificationTimer);
+                    showVerificationError('Verification code has expired. Please try again.');
+                    document.getElementById('verifyButton').disabled = true;
+                }
+            }, 1000);
+        }
+        
+        function closeVerificationModal() {
+            document.getElementById('verificationModal').classList.remove('active');
+            if (verificationTimer) {
+                clearInterval(verificationTimer);
+            }
+            document.getElementById('verificationTimer').classList.remove('warning');
+        }
+        
+        function showVerificationError(message) {
+            const errorDiv = document.getElementById('verificationError');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('active');
+        }
+        
+        function hideVerificationError() {
+            const errorDiv = document.getElementById('verificationError');
+            errorDiv.classList.remove('active');
+        }
+        
+        function submitVerificationCode() {
+            const enteredCode = document.getElementById('verificationCodeInput').value;
+            
+            if (!enteredCode || enteredCode.length !== 6) {
+                showVerificationError('Please enter a valid 6-digit code.');
+                return;
+            }
+            
+            const verifyBtn = document.getElementById('verifyButton');
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+            
+            // Verify the code
+            fetch('verify_payment_code.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'code=' + enteredCode
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Code verified, proceed to checkout
+                    closeVerificationModal();
+                    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+                    const subMethod = document.querySelector('input[name="payment_sub_method"]:checked').value;
+                    processCheckout(paymentMethod, subMethod);
+                } else {
+                    showVerificationError(data.message);
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify & Pay';
+                    
+                    // If max attempts or expired, close modal
+                    if (data.max_attempts_exceeded || data.expired) {
+                        setTimeout(() => {
+                            closeVerificationModal();
+                        }, 2000);
+                    }
+                }
+            })
+            .catch(error => {
+                showVerificationError('Verification failed. Please try again.');
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Verify & Pay';
+            });
+        }
+        
+        function processCheckout(paymentMethod, subMethod) {
             if (!confirm(`Proceed with checkout using ${paymentMethod === 'cod' ? 'Cash on Delivery' : subMethod.replace('_', ' ')}?`)) return;
             
             const btn = document.getElementById('checkoutBtn');
@@ -426,6 +599,18 @@ $total = $subtotal + $tax;
                 }
             });
         }
+        
+        // Allow Enter key to submit verification code
+        document.addEventListener('DOMContentLoaded', function() {
+            const verificationInput = document.getElementById('verificationCodeInput');
+            if (verificationInput) {
+                verificationInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        submitVerificationCode();
+                    }
+                });
+            }
+        });
     </script>
 
     <?php 
