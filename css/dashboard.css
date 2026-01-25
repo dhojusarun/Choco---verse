@@ -783,8 +783,10 @@ input[type='checkbox'] {
 /* Customer Orders Grid */
 .orders-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
+    align-items: stretch;
 }
 
 .order-card {
@@ -793,6 +795,9 @@ input[type='checkbox'] {
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .order-card:hover {
@@ -821,15 +826,23 @@ input[type='checkbox'] {
 
 .order-details {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    flex-grow: 1;
+}
+
+.order-details>div:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
 }
 
 .order-amount {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--gold);
-    text-align: right;
+    margin-bottom: auto;
 }
 
 /* Revenue Styles */

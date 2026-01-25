@@ -141,6 +141,70 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
     <title>Order Details - Choco World</title>
     <link rel="stylesheet" href="../../css/common.css">
     <link rel="stylesheet" href="../../css/dashboard.css">
+    <style>
+        /* Print-specific styles */
+        @media print {
+            /* Hide header, footer, and navigation */
+            header, footer, .dashboard-header, .print-hide, .status-form {
+                display: none !important;
+            }
+            
+            /* Reset body styling for print */
+            body {
+                background: white !important;
+                color: #333 !important;
+            }
+            
+            .dashboard {
+                padding: 0 !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            
+            /* Style for print */
+            .order-details {
+                background: white !important;
+                color: #333 !important;
+            }
+            
+            .detail-section h3 {
+                color: #333 !important;
+            }
+            
+            .detail-label, .detail-value {
+                color: #333 !important;
+            }
+            
+            .items-table {
+                color: #333 !important;
+            }
+            
+            .items-table thead {
+                background: #333 !important;
+                color: white !important;
+            }
+            
+            /* Add print header */
+            .order-details::before {
+                content: "🍫 Choco World - Order Statement";
+                display: block;
+                font-size: 2rem;
+                font-weight: 700;
+                text-align: center;
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+                border-bottom: 3px solid #DAA520;
+                color: #333;
+            }
+            
+            @page {
+                margin: 1cm;
+            }
+        }
+    </style>
 </head>
 
     <?php 
@@ -155,7 +219,12 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
                     <h1>📦 Order #<?php echo str_pad($order['id'], 5, '0', STR_PAD_LEFT); ?></h1>
                     <p>Order Details</p>
                 </div>
-                <a href="list.php" class="btn btn-secondary">← Back to Orders</a>
+                <div style="display: flex; gap: 1rem;" class="print-hide">
+                    <button onclick="window.print()" class="btn btn-primary">
+                        🖨️ Print Statement
+                    </button>
+                    <a href="list.php" class="btn btn-secondary">← Back to Orders</a>
+                </div>
             </div>
             
             <div class="order-details">
