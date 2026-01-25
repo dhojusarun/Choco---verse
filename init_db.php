@@ -33,10 +33,41 @@ try {
     $pdo->exec($sql);
     echo "✓ Users table created successfully<br>";
     
+    // Create categories table
+    $sql = "CREATE TABLE IF NOT EXISTS categories (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) UNIQUE NOT NULL,
+        description TEXT,
+        image_url VARCHAR(255) DEFAULT 'images/categories/default.jpg',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    
+    $pdo->exec($sql);
+    echo "✓ Categories table created successfully<br>";
+    
+    // Insert initial categories if none exist
+    $stmt = $pdo->query("SELECT COUNT(*) FROM categories");
+    if ($stmt->fetchColumn() == 0) {
+        $categories = [
+            ['Artisan Truffles', 'Handcrafted truffles with exotic fillings.', 'images/categories/truffles.jpg'],
+            ['Dark Chocolate', 'Pure, intense cocoa experience.', 'images/categories/dark.jpg'],
+            ['Milk Chocolate', 'Smooth, creamy classics loved by all.', 'images/categories/milk.jpg'],
+            ['Assorted Gifts', 'Perfectly curated sets for any occasion.', 'images/categories/gifts.jpg'],
+            ['Baking Cocoa', 'Professional grade ingredients for your kitchen.', 'images/categories/baking.jpg'],
+            ['Limited Editions', 'Seasonal specials and rare chocolate finds.', 'images/categories/limited.jpg']
+        ];
+        $stmt = $pdo->prepare("INSERT INTO categories (name, description, image_url) VALUES (?, ?, ?)");
+        foreach ($categories as $cat) {
+            $stmt->execute($cat);
+        }
+        echo "✓ Initial categories inserted successfully<br>";
+    }
+    
     // Create products table
     $sql = "CREATE TABLE IF NOT EXISTS products (
         id INT AUTO_INCREMENT PRIMARY KEY,
         vendor_id INT NOT NULL,
+        category_id INT,
         name VARCHAR(200) NOT NULL,
         description TEXT,
         price DECIMAL(10,2) NOT NULL,
@@ -46,7 +77,9 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (vendor_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
         INDEX idx_vendor (vendor_id),
+        INDEX idx_category (category_id),
         INDEX idx_active (is_active)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
     
@@ -168,6 +201,7 @@ try {
     echo "<p style='margin-top: 1rem;'>All tables have been created:</p>";
     echo "<ul style='line-height: 2;'>";
     echo "<li>✓ Users (customer & vendor accounts)</li>";
+    echo "<li>✓ Categories (product labels)</li>";
     echo "<li>✓ Products (vendor product listings)</li>";
     echo "<li>✓ Orders (customer purchases)</li>";
     echo "<li>✓ Order Items (order details)</li>";

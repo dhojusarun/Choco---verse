@@ -1,7 +1,11 @@
 <?php
 require 'config/database.php';
-$stmt = $pdo->query('DESCRIBE products');
-while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    echo $row['Field'] . " - " . $row['Type'] . "\n";
+try {
+    $stmt = $pdo->query('SHOW TABLES');
+    while($row = $stmt->fetch(PDO::FETCH_NUM)) {
+        echo $row[0] . "\n";
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
 }
 ?>

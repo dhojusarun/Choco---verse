@@ -5,25 +5,46 @@ $customer_id = $_SESSION['user_id'] ?? null;
 $is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'customer';
 
 require_once '../../config/database.php';
+$category_filter = $_GET['category'] ?? null;
 
 
 
-// Fetch all active products with vendor info and ratings
-$products_stmt = $pdo->prepare("
-    SELECT p.*, u.username as vendor_name,
+// Fetch all active products with vendor info, ratings, and category name
+$products_query = "
+    SELECT p.*, u.username as vendor_name, c.name as category_name,
            COALESCE(AVG(r.rating), 0) as avg_rating,
            COUNT(DISTINCT r.id) as review_count,
            CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM favorites f WHERE f.product_id = p.id AND f.customer_id = ?) ELSE 0 END as is_favorite,
            CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) ELSE 0 END as in_cart
     FROM products p
     JOIN users u ON p.vendor_id = u.id
+    LEFT JOIN categories c ON p.category_id = c.id
     LEFT JOIN reviews r ON p.id = r.product_id
-    WHERE p.is_active = 1 AND p.stock > 0
+    WHERE p.is_active = 1
+";
+
+$params = [$customer_id, $customer_id, $customer_id, $customer_id];
+
+if ($category_filter) {
+    if (is_numeric($category_filter)) {
+        $products_query .= " AND p.category_id = ?";
+    } else {
+        $products_query .= " AND c.name = ?";
+    }
+    $params[] = $category_filter;
+}
+
+$products_query .= "
     GROUP BY p.id
     ORDER BY p.created_at DESC
-");
-$products_stmt->execute([$customer_id, $customer_id, $customer_id, $customer_id]);
+";
+
+$products_stmt = $pdo->prepare($products_query);
+$products_stmt->execute($params);
 $products = $products_stmt->fetchAll();
+
+// Fetch all categories for filtering
+$all_categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll();
 
 // Get cart count
 $cart_count = 0;
@@ -102,7 +123,14 @@ if ($is_logged_in) {
                             <a href="details.php?id=<?php echo $product['id']; ?>" style="text-decoration: none;">
                                 <h3 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h3>
                             </a>
-                            <div class="vendor-name">by <?php echo htmlspecialchars($product['vendor_name']); ?></div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <div class="vendor-name">by <?php echo htmlspecialchars($product['vendor_name']); ?></div>
+                                <?php if ($product['category_name']): ?>
+                                    <span style="font-size: 0.7rem; background: rgba(212, 175, 55, 0.2); color: var(--gold); padding: 0.2rem 0.5rem; border-radius: 5px;">
+                                        <?php echo htmlspecialchars($product['category_name']); ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
                             
                             <div class="product-rating">
                                 <?php 
@@ -121,11 +149,17 @@ if ($is_logged_in) {
                             <div class="product-price">$<?php echo number_format($product['price'], 2); ?></div>
                             
                             <div style="margin-bottom: 1rem;">
-                                <span class="stock-badge">In Stock: <?php echo $product['stock']; ?> units</span>
+                                <?php if ($product['stock'] > 0): ?>
+                                    <span class="stock-badge">In Stock: <?php echo $product['stock']; ?> units</span>
+                                <?php else: ?>
+                                    <span class="stock-badge out-of-stock" style="background: rgba(244, 67, 54, 0.2); color: #FFCDD2; border: 1px solid rgba(244, 67, 54, 0.3);">❌ Out of Stock</span>
+                                <?php endif; ?>
                             </div>
                             
                             <div class="product-actions">
-                                <?php if ($product['in_cart']): ?>
+                                <?php if ($product['stock'] <= 0): ?>
+                                    <button class="btn btn-secondary btn-small" disabled style="opacity: 0.6; cursor: not-allowed;">Out of Stock</button>
+                                <?php elseif ($product['in_cart']): ?>
                                     <button class="btn btn-secondary btn-small" disabled>✓ In Cart</button>
                                 <?php else: ?>
                                     <button class="btn btn-primary btn-small" onclick="addToCart(<?php echo $product['id']; ?>, this)">

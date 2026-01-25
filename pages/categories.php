@@ -8,14 +8,15 @@ $username = $_SESSION['username'] ?? '';
 $customer_id = $is_logged_in ? $_SESSION['user_id'] : null;
 
 // Categories for display
-$categories = [
-    ['name' => 'Artisan Truffles', 'icon' => '🍬', 'count' => 24, 'desc' => 'Handcrafted truffles with exotic fillings.'],
-    ['name' => 'Dark Chocolate', 'icon' => '🍫', 'count' => 18, 'desc' => 'Pure, intense cocoa experience.'],
-    ['name' => 'Milk Chocolate', 'icon' => '🥛', 'count' => 15, 'desc' => 'Smooth, creamy classics loved by all.'],
-    ['name' => 'Assorted Gifts', 'icon' => '🎁', 'count' => 12, 'desc' => 'Perfectly curated sets for any occasion.'],
-    ['name' => 'Baking Cocoa', 'icon' => '🧁', 'count' => 8, 'desc' => 'Professional grade ingredients for your kitchen.'],
-    ['name' => 'Limited Editions', 'icon' => '✨', 'count' => 5, 'desc' => 'Seasonal specials and rare chocolate find.']
-];
+// Fetch categories from database with product counts
+$categories_stmt = $pdo->query("
+    SELECT c.*, COUNT(p.id) as product_count
+    FROM categories c
+    LEFT JOIN products p ON c.id = p.category_id AND p.is_active = 1
+    GROUP BY c.id
+    ORDER BY c.name ASC
+");
+$categories = $categories_stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,11 +67,14 @@ $categories = [
     <div class="container">
         <div class="category-grid">
             <?php foreach ($categories as $cat): ?>
-                <a href="../customer/products/browse.php?category=<?php echo urlencode($cat['name']); ?>" class="category-card">
-                    <span class="category-icon"><?php echo $cat['icon']; ?></span>
-                    <h3><?php echo $cat['name']; ?></h3>
-                    <p><?php echo $cat['desc']; ?></p>
-                    <span class="category-count"><?php echo $cat['count']; ?> Products</span>
+                <a href="../customer/products/browse.php?category=<?php echo $cat['id']; ?>" class="category-card">
+                    <img src="../<?php echo htmlspecialchars($cat['image_url']); ?>" 
+                         alt="<?php echo htmlspecialchars($cat['name']); ?>"
+                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 1rem;"
+                         onerror="this.src='../images/categories/default.jpg'">
+                    <h3><?php echo htmlspecialchars($cat['name']); ?></h3>
+                    <p><?php echo htmlspecialchars($cat['description']); ?></p>
+                    <span class="category-count"><?php echo $cat['product_count']; ?> Products</span>
                 </a>
             <?php endforeach; ?>
         </div>

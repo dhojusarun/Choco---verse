@@ -73,11 +73,25 @@ INSERT INTO `users` (`username`, `email`, `password`, `role`) VALUES
 -- SELECT id, username, email, role, created_at FROM users ORDER BY created_at DESC;
 
 -- ============================================
+-- Categories Table
+-- ============================================
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `description` TEXT,
+  `image_url` VARCHAR(255) DEFAULT 'images/categories/default.jpg',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
 -- Products Table
 -- ============================================
 CREATE TABLE IF NOT EXISTS `products` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` INT(11) NOT NULL,
+  `category_id` INT(11) DEFAULT NULL,
   `name` VARCHAR(200) NOT NULL,
   `description` TEXT,
   `price` DECIMAL(10,2) NOT NULL,
@@ -88,9 +102,22 @@ CREATE TABLE IF NOT EXISTS `products` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`vendor_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL,
   KEY `idx_vendor` (`vendor_id`),
+  KEY `idx_category` (`category_id`),
   KEY `idx_active` (`is_active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- Insert Initial Categories
+-- ============================================
+INSERT IGNORE INTO `categories` (`name`, `description`, `image_url`) VALUES
+('Artisan Truffles', 'Handcrafted truffles with exotic fillings.', 'images/categories/truffles.jpg'),
+('Dark Chocolate', 'Pure, intense cocoa experience.', 'images/categories/dark.jpg'),
+('Milk Chocolate', 'Smooth, creamy classics loved by all.', 'images/categories/milk.jpg'),
+('Assorted Gifts', 'Perfectly curated sets for any occasion.', 'images/categories/gifts.jpg'),
+('Baking Cocoa', 'Professional grade ingredients for your kitchen.', 'images/categories/baking.jpg'),
+('Limited Editions', 'Seasonal specials and rare chocolate finds.', 'images/categories/limited.jpg');
 
 -- ============================================
 -- Orders Table

@@ -105,13 +105,18 @@ $total = $subtotal + $tax;
                         </div>
                         
                         <div class="item-actions">
-                            <div class="quantity-control">
+                            <div class="quantity-control <?php echo ($item['stock'] <= 0) ? 'disabled' : ''; ?>">
                                 <button class="qty-btn" onclick="updateQuantity(<?php echo $item['id']; ?>, -1, <?php echo $item['stock']; ?>)">-</button>
                                 <input type="number" class="qty-input" id="qty-<?php echo $item['id']; ?>" 
                                        value="<?php echo $item['quantity']; ?>" 
                                        min="1" max="<?php echo $item['stock']; ?>" readonly>
                                 <button class="qty-btn" onclick="updateQuantity(<?php echo $item['id']; ?>, 1, <?php echo $item['stock']; ?>)">+</button>
                             </div>
+                            <?php if ($item['stock'] <= 0): ?>
+                                <div style="color: #EF5350; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.8rem;">❌ Out of Stock</div>
+                            <?php elseif ($item['quantity'] > $item['stock']): ?>
+                                <div style="color: #FFD54F; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.8rem;">⚠️ Low Stock (Max: <?php echo $item['stock']; ?>)</div>
+                            <?php endif; ?>
                             <button class="remove-btn" onclick="removeItem(<?php echo $item['id']; ?>)">🗑️ Remove</button>
                         </div>
                     </div>
@@ -247,7 +252,24 @@ $total = $subtotal + $tax;
                         </div>
                     </div>
 
-                    <button class="btn btn-primary checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()" <?php echo $wallet_balance < $total ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>>
+                    <?php 
+                    $has_oos_items = false;
+                    foreach ($cart_items as $item) {
+                        if ($item['stock'] < $item['quantity']) {
+                            $has_oos_items = true;
+                            break;
+                        }
+                    }
+                    ?>
+                    
+                    <?php if ($has_oos_items): ?>
+                    <div style="background: rgba(244, 67, 54, 0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid rgba(244, 67, 54, 0.3);">
+                        <small style="color: #CC2222;">⚠️ Some items in your cart are out of stock or have insufficient quantity. Please adjust your cart to proceed.</small>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <button class="btn btn-primary checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()" 
+                        <?php echo ($wallet_balance < $total || $has_oos_items) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>>
                         Proceed to Checkout 🎁
                     </button>
                     

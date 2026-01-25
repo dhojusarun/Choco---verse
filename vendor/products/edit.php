@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = trim($_POST['description'] ?? '');
     $price = trim($_POST['price'] ?? '');
     $stock = trim($_POST['stock'] ?? '');
+    $category_id = $_POST['category_id'] ?? null;
     $is_active = isset($_POST['is_active']) ? 1 : 0;
     
     if (empty($name) || empty($price) || empty($stock)) {
@@ -61,10 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $pdo->prepare("
                 UPDATE products 
-                SET name = ?, description = ?, price = ?, stock = ?, image_url = ?, is_active = ?
+                SET category_id = ?, name = ?, description = ?, price = ?, stock = ?, image_url = ?, is_active = ?
                 WHERE id = ? AND vendor_id = ?
             ");
-            $stmt->execute([$name, $description, $price, $stock, $image_url, $is_active, $product_id, $vendor_id]);
+            $stmt->execute([$category_id, $name, $description, $price, $stock, $image_url, $is_active, $product_id, $vendor_id]);
             
             $success = 'Product updated successfully!';
             header('Location: list.php');
@@ -74,6 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+// Fetch categories for dropdown
+$categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,6 +117,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group form-full">
                             <label for="name">Product Name *</label>
                             <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group form-full">
+                            <label for="category_id">Product Category *</label>
+                            <select id="category_id" name="category_id" required style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 15px; color: var(--cream);">
+                                <option value="">-- Select Category --</option>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?php echo $category['id']; ?>" <?php echo $product['category_id'] == $category['id'] ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($category['name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     
