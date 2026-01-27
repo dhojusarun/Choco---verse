@@ -92,10 +92,12 @@ $products = $stmt->fetchAll();
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="edit.php?id=<?php echo $product['id']; ?>" class="action-btn btn-edit">Edit</a>
-                                    <a href="delete.php?id=<?php echo $product['id']; ?>" 
-                                       class="action-btn btn-delete" 
-                                       onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="edit.php?id=<?php echo $product['id']; ?>" class="action-btn btn-edit">📝 Edit</a>
+                                        <a href="delete.php?id=<?php echo $product['id']; ?>" 
+                                           class="action-btn btn-delete" 
+                                           onclick="return confirm('🚨 Are you sure you want to delete this product?')">🗑️ Delete</a>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

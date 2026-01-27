@@ -87,88 +87,101 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAl
             <div class="dashboard-header">
                 <div class="dashboard-title">
                     <h1>➕ Add New Product</h1>
-                    <p>Create a new chocolate product</p>
+                    <p>Create a fresh indulgence for your customers</p>
                 </div>
                 <a href="list.php" class="btn btn-secondary">← Back to Products</a>
             </div>
             
-            <div class="product-form">
-                <?php if ($error): ?>
-                    <div class="alert alert-error show"><?php echo htmlspecialchars($error); ?></div>
-                <?php endif; ?>
-                
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="form-row">
-                        <div class="form-group form-full">
-                            <label for="name">Product Name *</label>
-                            <input type="text" id="name" name="name" placeholder="e.g., Dark Chocolate Truffles" required>
-                        </div>
-                    </div>
+            <div class="dashboard-content">
+                <div class="product-form">
+                    <?php if ($error): ?>
+                        <div class="alert alert-error show"><?php echo htmlspecialchars($error); ?></div>
+                    <?php endif; ?>
                     
-                    <div class="form-row">
-                        <div class="form-group form-full">
-                            <label for="category_id">Product Category *</label>
-                            <select id="category_id" name="category_id" required style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 15px; color: var(--cream);">
-                                <option value="">-- Select Category --</option>
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category['id']; ?>">
-                                        <?php echo htmlspecialchars($category['name']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group form-full">
-                            <label for="description">Description</label>
-                            <textarea id="description" name="description" placeholder="Describe your chocolate product..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="price">Price ($) *</label>
-                            <input type="number" id="price" name="price" step="0.01" min="0" placeholder="0.00" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="stock">Stock Quantity *</label>
-                            <input type="number" id="stock" name="stock" min="0" placeholder="0" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group form-full">
-                            <label>Product Image</label>
-                            <div class="file-input-wrapper">
-                                <label for="image" class="file-input-label">
-                                    📸 Click to upload image (JPG, PNG, WEBP)
-                                    <br><small>Maximum file size: 5MB</small>
-                                </label>
-                                <input type="file" id="image" name="image" accept="image/*">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group form-full">
+                                <label for="name">✨ Product Name</label>
+                                <input type="text" id="name" name="name" placeholder="e.g., Artisan Dark Chocolate Truffles" required>
+                                <small style="opacity: 0.6; margin-top: 0.5rem; display: block;">Pick a name that sounds as sweet as it tastes!</small>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="is_active" name="is_active" checked>
-                        <label for="is_active" style="margin: 0; color: var(--cream);">Product is active and visible to customers</label>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Add Product</button>
-                </form>
+                        
+                        <div class="form-row">
+                            <div class="form-group form-full">
+                                <label for="category_id">📂 Product Category</label>
+                                <select id="category_id" name="category_id" required>
+                                    <option value="" disabled selected>-- Select the best fit --</option>
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?php echo $category['id']; ?>">
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group form-full">
+                                <label for="description">✍️ Description</label>
+                                <textarea id="description" name="description" placeholder="Describe the texture, flavor profile, and story behind this chocolate..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="price">💰 Price ($)</label>
+                                <input type="number" id="price" name="price" step="0.01" min="0" placeholder="0.00" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="stock">📦 Initial Stock</label>
+                                <input type="number" id="stock" name="stock" min="0" placeholder="0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group form-full">
+                                <label>🖼️ Product Image</label>
+                                <div class="file-input-wrapper">
+                                    <label for="image" class="file-input-label">
+                                        <span id="upload-icon">📸</span>
+                                        <div id="upload-text">
+                                            <strong>Click to upload product image</strong>
+                                            <br><small>JPG, PNG, or WEBP (Max 5MB)</small>
+                                        </div>
+                                    </label>
+                                    <input type="file" id="image" name="image" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="is_active" name="is_active" checked>
+                            <label for="is_active" style="margin: 0; color: var(--gold-light);">Visible to customers immediately</label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2.5rem; padding: 1.2rem;">
+                            🚀 Add This Indulgence
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Show selected filename
+        // Show selected filename and preview
         document.getElementById('image').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name;
-            if (fileName) {
-                document.querySelector('.file-input-label').innerHTML = 
-                    `✅ Selected: ${fileName}<br><small>Click to change</small>`;
+            const file = e.target.files[0];
+            const uploadText = document.getElementById('upload-text');
+            const uploadIcon = document.getElementById('upload-icon');
+            
+            if (file) {
+                uploadIcon.innerHTML = '✅';
+                uploadText.innerHTML = `<strong>${file.name}</strong><br><small>File ready for upload</small>`;
+                document.querySelector('.file-input-label').style.borderColor = 'var(--gold)';
+                document.querySelector('.file-input-label').style.background = 'rgba(212, 175, 55, 0.15)';
             }
         });
     </script>
