@@ -7,12 +7,11 @@ $role = $_SESSION['role'] ?? 'guest';
 $username = $_SESSION['username'] ?? '';
 $customer_id = $is_logged_in ? $_SESSION['user_id'] : null;
 
-// Categories for display
-// Fetch categories from database with product counts
+// Fetch all categories with their product counts
 $categories_stmt = $pdo->query("
     SELECT c.*, COUNT(p.id) as product_count
     FROM categories c
-    LEFT JOIN products p ON c.id = p.category_id AND p.is_active = 1
+    LEFT JOIN products p ON (c.id = p.category_id AND p.is_active = 1)
     GROUP BY c.id
     ORDER BY c.name ASC
 ");
@@ -26,6 +25,7 @@ $categories = $categories_stmt->fetchAll();
     <title>Product Categories - Choco World</title>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="../css/categories.css">
 </head>
 <body>
     <?php 
@@ -65,20 +65,76 @@ $categories = $categories_stmt->fetchAll();
     </section>
 
     <div class="container">
-        <div class="category-grid">
-            <?php foreach ($categories as $cat): ?>
-                <a href="../customer/products/browse.php?category=<?php echo $cat['id']; ?>" class="category-card">
-                    <img src="../<?php echo htmlspecialchars($cat['image_url']); ?>" 
-                         alt="<?php echo htmlspecialchars($cat['name']); ?>"
-                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 1rem;"
-                         onerror="this.src='../images/categories/default.jpg'">
-                    <h3><?php echo htmlspecialchars($cat['name']); ?></h3>
-                    <p><?php echo htmlspecialchars($cat['description']); ?></p>
-                    <span class="category-count"><?php echo $cat['product_count']; ?> Products</span>
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="categorySearch" placeholder="Search categories..." autocomplete="off">
+            </div>
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+            <?php foreach ($categories as $cat): 
+                $is_out_of_stock = $cat['product_count'] == 0;
+            ?>
+                <a href="../customer/products/browse.php?category=<?php echo $cat['id']; ?>" 
+                   class="category-card <?php echo $is_out_of_stock ? 'out-of-stock' : ''; ?>" 
+                   data-name="<?php echo strtolower(htmlspecialchars($cat['name'])); ?>">
+                    
+                    <?php if ($is_out_of_stock): ?>
+                        <div class="stock-badge">Out of Stock</div>
+                    <?php endif; ?>
+
+                    <div class="category-image-wrapper">
+                        <img src="../<?php echo htmlspecialchars($cat['image_url']); ?>" 
+                             alt="<?php echo htmlspecialchars($cat['name']); ?>"
+                             onerror="this.src='../images/categories/default.jpg'">
+                    </div>
+                    <div class="category-content">
+                        <h3><?php echo htmlspecialchars($cat['name']); ?></h3>
+                        <p><?php echo htmlspecialchars($cat['description']); ?></p>
+                        <div class="category-stats">
+                            <span class="category-count">
+                                <?php if ($is_out_of_stock): ?>
+                                    🚫 Out of Stock
+                                <?php else: ?>
+                                    🍫 <?php echo $cat['product_count']; ?> Products
+                                <?php endif; ?>
+                            </span>
+                        </div>
+                    </div>
                 </a>
             <?php endforeach; ?>
         </div>
+        
+        <!-- Empty State -->
+        <div id="noResults" style="display: none; text-align: center; padding: 5rem 2rem; color: var(--cream); opacity: 0.7;">
+            <div style="font-size: 4rem; margin-bottom: 1.5rem;">🍫🔍</div>
+            <h3>No categories found matching your search.</h3>
+            <p>Try a different keyword!</p>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('categorySearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.category-card');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                if (name.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+    </script>
 
     <?php 
     $logo_path = '../images/logo.png';

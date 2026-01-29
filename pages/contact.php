@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Contact Us - Choco World</title>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="../css/contact.css">
 </head>
 <body>
     <?php 
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="page-hero">
         <div class="container">
             <h1>📞 Get in Touch</h1>
-            <p>We'd love to hear from you!</p>
+            <p>Have a question or want to share your love for chocolate? We're here to help!</p>
         </div>
     </section>
 
@@ -69,45 +70,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="contact-grid">
             <div class="contact-info-card">
                 <div class="info-item">
-                    <h4>📍 Visit Us</h4>
-                    <p>123 Chocolate Avenue<br>Sweet District, Kathmandu<br>Nepal</p>
+                    <div class="info-icon">📍</div>
+                    <div class="info-content">
+                        <h3>Visit Our Boutique</h3>
+                        <p>123 Chocolate Avenue<br>Sweet District, Kathmandu<br>Nepal - 44600</p>
+                    </div>
                 </div>
+                
                 <div class="info-item">
-                    <h4>✉️ Email Us</h4>
-                    <p>info@chocoworld.com<br>support@chocoworld.com</p>
+                    <div class="info-icon">✉️</div>
+                    <div class="info-content">
+                        <h3>Email Enquiries</h3>
+                        <p>info@chocoworld.com<br>support@chocoworld.com</p>
+                    </div>
                 </div>
+                
                 <div class="info-item">
-                    <h4>📞 Call Us</h4>
-                    <p>+977 984-1234567<br>Mon-Fri, 9am - 8pm</p>
+                    <div class="info-icon">📞</div>
+                    <div class="info-content">
+                        <h3>Direct Hotline</h3>
+                        <p>+977 984-1234567<br>Mon-Fri, 9:00 AM - 8:00 PM</p>
+                    </div>
                 </div>
+
                 <div class="info-item">
-                    <h4>🌟 Socials</h4>
-                    <p>@ChocoWorldOfficial</p>
+                    <div class="info-icon">🌟</div>
+                    <div class="info-content">
+                        <h3>Connect with Us</h3>
+                        <div class="contact-socials">
+                            <a href="#" class="social-circle">📘</a>
+                            <a href="#" class="social-circle">📷</a>
+                            <a href="#" class="social-circle">🐦</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="contact-form">
-                <h3 style="color: var(--gold); margin-bottom: 2rem;">Send us a message</h3>
+            <div class="contact-form-container">
+                <h2>Send us a Message</h2>
                 <form method="POST">
                     <div class="form-row">
-                        <div class="form-group" style="margin-bottom:0">
-                            <label>Your Name</label>
-                            <input type="text" placeholder="John Doe" required>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="name" placeholder="Enter your name" required>
                         </div>
-                        <div class="form-group" style="margin-bottom:0">
+                        <div class="form-group">
                             <label>Email Address</label>
-                            <input type="email" placeholder="john@example.com" required>
+                            <input type="email" name="email" placeholder="Enter your email" required>
                         </div>
                     </div>
+                    
                     <div class="form-group">
                         <label>Subject</label>
-                        <input type="text" placeholder="Inquiry about artisan truffles">
+                        <input type="text" name="subject" placeholder="What is this regarding?" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Message</label>
-                        <textarea class="form-control" placeholder="Write your message here..." required></textarea>
+                        <label>Your Message</label>
+                        <textarea name="message" placeholder="Tell us more about your inquiry..." required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">🚀 Send Message</button>
+
+                    <button type="submit" class="btn btn-primary btn-submit">
+                        🚀 Send Message
+                    </button>
                 </form>
             </div>
         </div>

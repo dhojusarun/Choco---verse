@@ -1,0 +1,200 @@
+/* Contact Page Specific Styles */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    margin: 2rem 0 5rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.contact-info-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.info-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    transition: var(--transition-smooth);
+}
+
+.info-item:hover {
+    transform: translateX(10px);
+}
+
+.info-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.info-content h3 {
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-family: var(--font-heading);
+}
+
+.info-content p {
+    color: var(--cream);
+    opacity: 0.8;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* Contact Form Styles */
+.contact-form-container {
+    background: rgba(44, 24, 16, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 3.5rem;
+    border-radius: 30px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.contact-form-container h2 {
+    color: var(--gold);
+    margin-bottom: 2rem;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.8rem;
+}
+
+.form-group label {
+    display: block;
+    color: var(--gold-light);
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 15px;
+    color: var(--cream);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: var(--transition-smooth);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.form-group textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.btn-submit {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    padding: 1.2rem;
+    margin-top: 1rem;
+}
+
+/* Social Links In Contact */
+.contact-socials {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.social-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    transition: var(--transition-bounce);
+}
+
+.social-circle:hover {
+    background: var(--gold);
+    color: var(--chocolate-dark);
+    transform: translateY(-5px) rotate(360deg);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .contact-info-card,
+    .contact-form-container {
+        padding: 2.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .contact-info-card,
+    .contact-form-container {
+        padding: 1.5rem;
+    }
+}
