@@ -17,7 +17,7 @@ try {
     
     // Fetch cart items with product details
     $cart_stmt = $pdo->prepare("
-        SELECT c.*, p.price, p.stock, p.vendor_id
+        SELECT c.*, p.name, p.price, p.stock, p.vendor_id
         FROM cart c
         JOIN products p ON c.product_id = p.id
         WHERE c.customer_id = ? AND p.is_active = 1
@@ -44,12 +44,15 @@ try {
         }
     }
     
-    // Calculate total
+    // Calculate total and prepare product summary
     $total_amount = 0;
+    $product_names_arr = [];
     foreach ($cart_items as $item) {
         $total_amount += $item['price'] * $item['quantity'];
+        $product_names_arr[] = $item['name'];
     }
     $total_amount = $total_amount * 1.1; // Add 10% tax
+    $product_summary = implode(', ', $product_names_arr);
     
     
     // Check if customer has sufficient wallet balance (only for online payment)
@@ -112,16 +115,16 @@ try {
     
     // Create order
     $order_stmt = $pdo->prepare("
-        INSERT INTO orders (customer_id, total_amount, status, shipping_address, payment_method, payment_sub_method)
-        VALUES (?, ?, ?, 'Default shipping address', ?, ?)
+        INSERT INTO orders (customer_id, total_amount, status, product_names, shipping_address, payment_method, payment_sub_method)
+        VALUES (?, ?, ?, ?, 'Default shipping address', ?, ?)
     ");
-    $order_stmt->execute([$customer_id, $total_amount, $order_status, $payment_method, $payment_sub_method]);
+    $order_stmt->execute([$customer_id, $total_amount, $order_status, $product_summary, $payment_method, $payment_sub_method]);
     $order_id = $pdo->lastInsertId();
     
     // Create order items and update stock
     $order_item_stmt = $pdo->prepare("
-        INSERT INTO order_items (order_id, product_id, vendor_id, quantity, price, subtotal)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO order_items (order_id, product_id, product_name, vendor_id, quantity, price, subtotal)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
     
     $update_stock_stmt = $pdo->prepare("
@@ -135,6 +138,7 @@ try {
         $order_item_stmt->execute([
             $order_id,
             $item['product_id'],
+            $item['name'],
             $item['vendor_id'],
             $item['quantity'],
             $item['price'],

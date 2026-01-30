@@ -27,7 +27,7 @@ if (!$order) {
 
 // Fetch order items for this vendor
 $items_stmt = $pdo->prepare("
-    SELECT oi.*, p.name as product_name, p.image_url
+    SELECT oi.*, p.name as product_name, p.image_url, p.description as product_description
     FROM order_items oi
     JOIN products p ON oi.product_id = p.id
     WHERE oi.order_id = ? AND oi.vendor_id = ?
@@ -312,7 +312,15 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
                                          alt="<?php echo htmlspecialchars($item['product_name']); ?>"
                                          class="product-img"
                                          onerror="this.src='../../images/products/default-chocolate.jpg'">
-                                    <strong><?php echo htmlspecialchars($item['product_name']); ?></strong>
+                                    <div>
+                                        <strong><?php echo htmlspecialchars($item['product_name']); ?></strong>
+                                        <?php if ($item['product_description']): ?>
+                                            <p style="font-size: 0.8rem; opacity: 0.7; margin: 0.2rem 0 0 0;">
+                                                <?php echo htmlspecialchars(substr($item['product_description'], 0, 80)); ?>
+                                                <?php echo strlen($item['product_description']) > 80 ? '...' : ''; ?>
+                                            </p>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </td>
                             <td>$<?php echo number_format($item['price'], 2); ?></td>

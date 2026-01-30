@@ -119,7 +119,10 @@ $orders = $orders_stmt->fetchAll();
                     <div class="order-card">
                         <div class="order-header">
                             <div>
-                                <div class="order-id">Order #<?php echo str_pad($order['id'], 5, '0', STR_PAD_LEFT); ?></div>
+                                <div class="order-id">
+                                    Order #<?php echo str_pad($order['id'], 5, '0', STR_PAD_LEFT); ?>
+                                    <a href="details.php?id=<?php echo $order['id']; ?>" style="font-size: 0.8rem; color: var(--gold); margin-left: 0.5rem; text-decoration: none;">(View Details)</a>
+                                </div>
                                 <div class="order-date">Placed on <?php echo date('F d, Y', strtotime($order['created_at'])); ?></div>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
