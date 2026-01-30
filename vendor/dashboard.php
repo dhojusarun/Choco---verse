@@ -21,11 +21,31 @@ $email = $_SESSION['email'];
 </head>
 <body>
     <?php 
-
     $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
     require_once $root . '/config/database.php';
     $vendor_id = $_SESSION['user_id'];
 
+    // Stock stats
+    $stock_stmt = $pdo->prepare("
+        SELECT 
+            SUM(stock) as total_stock,
+            COUNT(CASE WHEN stock <= 5 AND stock > 0 THEN 1 END) as low_stock_count,
+            COUNT(CASE WHEN stock = 0 THEN 1 END) as out_of_stock_count
+        FROM products 
+        WHERE vendor_id = ?
+    ");
+    $stock_stmt->execute([$vendor_id]);
+    $stock_stats = $stock_stmt->fetch();
+
+    // Pending orders
+    $orders_stmt = $pdo->prepare("
+        SELECT COUNT(DISTINCT o.id) 
+        FROM orders o
+        JOIN order_items oi ON o.id = oi.order_id
+        WHERE oi.vendor_id = ? AND o.status = 'pending'
+    ");
+    $orders_stmt->execute([$vendor_id]);
+    $pending_orders = $orders_stmt->fetchColumn();
 
     include $root . '/includes/vendor_header.php'; 
     ?>
@@ -73,12 +93,34 @@ $email = $_SESSION['email'];
                         <h3>🏪 Store Settings</h3>
                         <p>Customize your vendor profile and business details.</p>
                     </a>
+
+                    <a href="customers/list.php" class="dashboard-card-link dashboard-card">
+                        <h3>👥 Customer List</h3>
+                        <p>View the list of customers who have purchased from you.</p>
+                    </a>
                 </div>
                 
-                <div class="insight-card">
-                    <h3>📈 Business Insights</h3>
-                    <p>Your store is performing great! You have <strong class="insight-highlight">0 pending orders</strong> to process.</p>
-                    <p style="margin-top: 0.5rem;">Pro Tip: Add high-quality product images to increase sales by up to 40%!</p>
+                <div class="insight-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                    <div class="insight-card">
+                        <h3>📈 Business Insights</h3>
+                        <p>Your store is performing great! You have <strong class="insight-highlight"><?php echo $pending_orders; ?> pending orders</strong> to process.</p>
+                        <p style="margin-top: 0.5rem;">Pro Tip: Add high-quality product images to increase sales by up to 40%!</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <h3>📦 Inventory Status</h3>
+                        <p>You have a total of <strong class="insight-highlight"><?php echo (int)$stock_stats['total_stock']; ?> units</strong> across all products.</p>
+                        <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <?php if ($stock_stats['low_stock_count'] > 0): ?>
+                                <p style="color: #FFB300;">⚠️ <strong><?php echo $stock_stats['low_stock_count']; ?> items</strong> are low on stock (under 5 units).</p>
+                            <?php endif; ?>
+                            <?php if ($stock_stats['out_of_stock_count'] > 0): ?>
+                                <p style="color: #F44336;">🚨 <strong><?php echo $stock_stats['out_of_stock_count']; ?> items</strong> are out of stock!</p>
+                            <?php else: ?>
+                                <p style="color: #4CAF50;">✅ All products are currently in stock.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

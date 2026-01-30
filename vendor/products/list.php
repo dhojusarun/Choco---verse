@@ -81,7 +81,15 @@ $products = $stmt->fetchAll();
                                     <small style="opacity: 0.7;"><?php echo substr(htmlspecialchars($product['description']), 0, 50); ?>...</small>
                                 </td>
                                 <td><strong style="color: var(--gold);">$<?php echo number_format($product['price'], 2); ?></strong></td>
-                                <td><?php echo $product['stock']; ?> units</td>
+                                <td>
+                                    <span style="color: <?php 
+                                        if ($product['stock'] == 0) echo '#F44336; font-weight: bold;';
+                                        elseif ($product['stock'] <= 5) echo '#FFB300; font-weight: bold;';
+                                        else echo 'inherit';
+                                    ?>">
+                                        <?php echo $product['stock'] == 0 ? 'Out of Stock' : $product['stock'] . ' units'; ?>
+                                    </span>
+                                </td>
                                 <td>
                                     ⭐ <?php echo number_format($product['avg_rating'], 1); ?> 
                                     <small>(<?php echo $product['review_count']; ?>)</small>

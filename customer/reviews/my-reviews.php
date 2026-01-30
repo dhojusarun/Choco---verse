@@ -46,34 +46,43 @@ $reviews = $reviews_stmt->fetchAll();
 
             <div class="dashboard-content">
                 <?php if (count($reviews) > 0): ?>
-                <div class="products-grid">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;">
                     <?php foreach ($reviews as $review): ?>
-                    <div class="product-card">
-                        <a href="../products/details.php?id=<?php echo $review['product_id']; ?>">
-                            <img src="../../<?php echo htmlspecialchars($review['image_url']); ?>" 
-                                 alt="<?php echo htmlspecialchars($review['product_name']); ?>" 
-                                 class="product-image"
-                                 onerror="this.src='../../images/products/default-chocolate.jpg'">
-                        </a>
-                        
-                        <div class="product-info">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <div class="review-card" style="display: flex; flex-direction: column; height: 100%;">
+                        <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding-bottom: 1.5rem;">
+                            <a href="../products/details.php?id=<?php echo $review['product_id']; ?>">
+                                <img src="../../<?php echo htmlspecialchars($review['image_url']); ?>" 
+                                     alt="<?php echo htmlspecialchars($review['product_name']); ?>" 
+                                     style="width: 80px; height: 80px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.2);"
+                                     onerror="this.src='../../images/products/default-chocolate.jpg'">
+                            </a>
+                            <div style="flex: 1;">
                                 <a href="../products/details.php?id=<?php echo $review['product_id']; ?>" style="text-decoration: none;">
-                                    <h3 class="product-name"><?php echo htmlspecialchars($review['product_name']); ?></h3>
+                                    <h3 style="color: var(--gold); font-size: 1.2rem; margin-bottom: 0.3rem;"><?php echo htmlspecialchars($review['product_name']); ?></h3>
                                 </a>
+                                <div style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 0.5rem;">
+                                    📅 <?php echo date('M d, Y', strtotime($review['created_at'])); ?>
+                                </div>
+                                <div class="review-stars">
+                                    <?php 
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        echo $i <= $review['rating'] ? '★' : '☆';
+                                    }
+                                    ?>
+                                </div>
                             </div>
-                            
-                            <div class="review-date">Reviewed on <?php echo date('M d, Y', strtotime($review['created_at'])); ?></div>
-                            
-                            <div class="review-rating">
-                                <?php 
-                                for ($i = 1; $i <= 5; $i++) {
-                                    echo $i <= $review['rating'] ? '★' : '☆';
-                                }
-                                ?>
-                            </div>
-                            
-                            <p class="review-comment">"<?php echo htmlspecialchars($review['comment']); ?>"</p>
+                        </div>
+                        
+                        <div style="flex-grow: 1;">
+                            <p style="font-style: italic; line-height: 1.6; color: var(--cream); opacity: 0.9;">
+                                "<?php echo htmlspecialchars($review['comment']); ?>"
+                            </p>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                            <a href="../products/details.php?id=<?php echo $review['product_id']; ?>" class="action-btn" style="color: var(--gold); border: 1px solid var(--gold); font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                                View Product Details
+                            </a>
                         </div>
                     </div>
                     <?php endforeach; ?>

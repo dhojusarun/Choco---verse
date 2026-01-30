@@ -27,7 +27,7 @@ if (!$order) {
 
 // Fetch order items for this vendor
 $items_stmt = $pdo->prepare("
-    SELECT oi.*, p.name as product_name, p.image_url, p.description as product_description
+    SELECT oi.*, p.name as product_name, p.image_url, p.description as product_description, p.stock as current_stock
     FROM order_items oi
     JOIN products p ON oi.product_id = p.id
     WHERE oi.order_id = ? AND oi.vendor_id = ?
@@ -300,6 +300,7 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
                             <th>Product</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            <th>Current Stock</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -325,6 +326,11 @@ $vendor_total = array_sum(array_column($items, 'subtotal'));
                             </td>
                             <td>$<?php echo number_format($item['price'], 2); ?></td>
                             <td><?php echo $item['quantity']; ?></td>
+                            <td>
+                                <span style="color: <?php echo $item['current_stock'] <= 5 ? '#FFB300' : 'inherit'; ?>;">
+                                    <?php echo $item['current_stock']; ?> units
+                                </span>
+                            </td>
                             <td><strong style="color: var(--gold);">$<?php echo number_format($item['subtotal'], 2); ?></strong></td>
                         </tr>
                         <?php endforeach; ?>

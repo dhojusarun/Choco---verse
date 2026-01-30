@@ -12,7 +12,7 @@ $order_id = $_GET['order_id'] ?? 0;
 // Verify order belongs to customer and is delivered
 $order_stmt = $pdo->prepare("
     SELECT id FROM orders 
-    WHERE id = ? AND customer_id = ? AND status = 'delivered'
+    WHERE id = ? AND customer_id = ? AND status != 'cancelled'
 ");
 $order_stmt->execute([$order_id, $customer_id]);
 $order = $order_stmt->fetch();
@@ -103,46 +103,59 @@ $success = isset($_GET['success']);
 
             <div class="dashboard-content">
                 <?php foreach ($items as $item): ?>
-                <div class="review-card">
-                    <img src="../../<?php echo htmlspecialchars($item['image_url']); ?>" 
-                         alt="<?php echo htmlspecialchars($item['name']); ?>" 
-                         class="product-preview"
-                         onerror="this.src='../../images/products/default-chocolate.jpg'">
-                    
-                    <div>
-                        <h3 style="color: var(--gold); margin-bottom: 0.5rem;"><?php echo htmlspecialchars($item['name']); ?></h3>
+                <div class="review-card" style="background: rgba(45, 26, 12, 0.4); border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.1); padding: 2rem; margin-bottom: 2rem; transition: var(--transition-smooth); overflow: hidden;">
+                    <div style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;">
+                        <img src="../../<?php echo htmlspecialchars($item['image_url']); ?>" 
+                             alt="<?php echo htmlspecialchars($item['name']); ?>" 
+                             class="product-preview"
+                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 15px; border: 2px solid rgba(212, 175, 55, 0.2);"
+                             onerror="this.src='../../images/products/default-chocolate.jpg'">
                         
-                        <?php if ($item['existing_review_id']): ?>
-                            <div class="status-pill">Already Reviewed</div>
-                            <p style="opacity: 0.7;">You have already shared your feedback for this item.</p>
-                        <?php else: ?>
-                            <form method="POST">
-                                <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>">
-                                
-                                <div class="rating-select">
-                                    <input type="radio" name="rating" value="5" id="star5-<?php echo $item['product_id']; ?>" class="star-radio" required>
-                                    <label for="star5-<?php echo $item['product_id']; ?>" class="star-label">★</label>
-                                    
-                                    <input type="radio" name="rating" value="4" id="star4-<?php echo $item['product_id']; ?>" class="star-radio">
-                                    <label for="star4-<?php echo $item['product_id']; ?>" class="star-label">★</label>
-                                    
-                                    <input type="radio" name="rating" value="3" id="star3-<?php echo $item['product_id']; ?>" class="star-radio">
-                                    <label for="star3-<?php echo $item['product_id']; ?>" class="star-label">★</label>
-                                    
-                                    <input type="radio" name="rating" value="2" id="star2-<?php echo $item['product_id']; ?>" class="star-radio">
-                                    <label for="star2-<?php echo $item['product_id']; ?>" class="star-label">★</label>
-                                    
-                                    <input type="radio" name="rating" value="1" id="star1-<?php echo $item['product_id']; ?>" class="star-radio">
-                                    <label for="star1-<?php echo $item['product_id']; ?>" class="star-label">★</label>
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.5rem; font-family: var(--font-heading);">
+                                <?php echo htmlspecialchars($item['name']); ?>
+                            </h3>
+                            
+                            <?php if ($item['existing_review_id']): ?>
+                                <div class="status-badge status-delivered" style="margin-bottom: 1rem;">
+                                    ✅ Review Submitted
                                 </div>
-                                
-                                <textarea name="comment" class="review-textarea" placeholder="Share your experience with this chocolate..." required></textarea>
-                                
-                                <button type="submit" name="submit_review" class="btn btn-primary" style="margin-top: 1rem; padding: 0.8rem 2rem;">
-                                    Post Review ✍️
-                                </button>
-                            </form>
-                        <?php endif; ?>
+                                <p style="opacity: 0.8; font-style: italic; color: var(--gold-light);">"Thank you for sharing your feedback on this artisanal treat!"</p>
+                            <?php else: ?>
+                                <form method="POST" class="review-form">
+                                    <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>">
+                                    
+                                    <div style="margin-bottom: 1.5rem;">
+                                        <label style="display: block; color: var(--cream); opacity: 0.8; margin-bottom: 0.5rem; font-size: 0.9rem;">Your Rating:</label>
+                                        <div class="rating-select">
+                                            <input type="radio" name="rating" value="5" id="star5-<?php echo $item['product_id']; ?>" class="star-radio" required>
+                                            <label for="star5-<?php echo $item['product_id']; ?>" class="star-label">★</label>
+                                            
+                                            <input type="radio" name="rating" value="4" id="star4-<?php echo $item['product_id']; ?>" class="star-radio">
+                                            <label for="star4-<?php echo $item['product_id']; ?>" class="star-label">★</label>
+                                            
+                                            <input type="radio" name="rating" value="3" id="star3-<?php echo $item['product_id']; ?>" class="star-radio">
+                                            <label for="star3-<?php echo $item['product_id']; ?>" class="star-label">★</label>
+                                            
+                                            <input type="radio" name="rating" value="2" id="star2-<?php echo $item['product_id']; ?>" class="star-radio">
+                                            <label for="star2-<?php echo $item['product_id']; ?>" class="star-label">★</label>
+                                            
+                                            <input type="radio" name="rating" value="1" id="star1-<?php echo $item['product_id']; ?>" class="star-radio">
+                                            <label for="star1-<?php echo $item['product_id']; ?>" class="star-label">★</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 1.5rem;">
+                                        <label style="display: block; color: var(--cream); opacity: 0.8; margin-bottom: 0.5rem; font-size: 0.9rem;">Your Review:</label>
+                                        <textarea name="comment" class="form-control" placeholder="Describe the texture, flavor, and your overall experience..." style="min-height: 120px; background: rgba(0,0,0,0.2);" required></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" name="submit_review" class="btn btn-primary" style="padding: 1rem 2.5rem; border-radius: 50px; font-weight: 600;">
+                                        Publish Review ✍️
+                                    </button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
                 <?php endforeach; ?>

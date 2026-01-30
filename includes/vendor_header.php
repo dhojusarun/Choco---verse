@@ -16,6 +16,7 @@
                 <a href="/project/Choco world/vendor/dashboard.php" class="nav-link">📊 Dashboard</a>
                 <a href="/project/Choco world/vendor/products/list.php" class="nav-link">🍫 My Products</a>
                 <a href="/project/Choco world/vendor/orders/list.php" class="nav-link">📦 Orders</a>
+                <a href="/project/Choco world/vendor/customers/list.php" class="nav-link">👥 Customers</a>
                 <a href="/project/Choco world/vendor/analytics/dashboard.php" class="nav-link">📈 Analytics</a>
             </nav>
             
@@ -59,6 +60,7 @@
             <a href="/project/Choco world/vendor/dashboard.php" class="mobile-nav-link">📊 Dashboard</a>
             <a href="/project/Choco world/vendor/products/list.php" class="mobile-nav-link">🍫 My Products</a>
             <a href="/project/Choco world/vendor/orders/list.php" class="mobile-nav-link">📦 Orders</a>
+            <a href="/project/Choco world/vendor/customers/list.php" class="mobile-nav-link">👥 Customers</a>
             <a href="/project/Choco world/vendor/analytics/dashboard.php" class="mobile-nav-link">📈 Analytics</a>
             <div class="mobile-divider"></div>
             <a href="/project/Choco world/vendor/settings/profile.php" class="mobile-nav-link">⚙️ Store Settings</a>

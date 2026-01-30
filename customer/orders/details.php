@@ -244,7 +244,7 @@ $items = $items_stmt->fetchAll();
                     </div>
                 </div>
 
-                <?php if ($order['status'] === 'delivered'): ?>
+                <?php if ($order['status'] !== 'cancelled'): ?>
                     <div style="margin-top: 2rem; text-align: right;">
                         <a href="../reviews/add.php?order_id=<?php echo $order['id']; ?>" class="btn btn-primary">
                             ⭐ Rate & Review Items
