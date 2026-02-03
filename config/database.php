@@ -5,6 +5,12 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', 'choco_world');
 
+// Base URL for the project
+if (!defined('BASE_URL')) {
+    define('BASE_URL', '/project/Choco world/');
+}
+
+
 try {
     $pdo = new PDO(
         "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",

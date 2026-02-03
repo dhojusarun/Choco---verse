@@ -6,18 +6,18 @@
     <div class="container">
         <div class="header-content">
             <!-- Logo -->
-            <a href="/project/Choco world/vendor/dashboard.php" class="header-logo">
-                <img src="/project/Choco world/images/logo.png" alt="Choco World">
+            <a href="<?php echo BASE_URL; ?>vendor/dashboard.php" class="header-logo">
+                <img src="<?php echo BASE_URL; ?>images/logo.png" alt="Choco World">
                 <span>Vendor Portal</span>
             </a>
             
             <!-- Main Navigation -->
             <nav class="main-nav">
-                <a href="/project/Choco world/vendor/dashboard.php" class="nav-link">📊 Dashboard</a>
-                <a href="/project/Choco world/vendor/products/list.php" class="nav-link">🍫 My Products</a>
-                <a href="/project/Choco world/vendor/orders/list.php" class="nav-link">📦 Orders</a>
-                <a href="/project/Choco world/vendor/customers/list.php" class="nav-link">👥 Customers</a>
-                <a href="/project/Choco world/vendor/analytics/dashboard.php" class="nav-link">📈 Analytics</a>
+                <a href="<?php echo BASE_URL; ?>vendor/dashboard.php" class="nav-link">📊 Dashboard</a>
+                <a href="<?php echo BASE_URL; ?>vendor/products/list.php" class="nav-link">🍫 My Products</a>
+                <a href="<?php echo BASE_URL; ?>vendor/orders/list.php" class="nav-link">📦 Orders</a>
+                <a href="<?php echo BASE_URL; ?>vendor/customers/list.php" class="nav-link">👥 Customers</a>
+                <a href="<?php echo BASE_URL; ?>vendor/analytics/dashboard.php" class="nav-link">📈 Analytics</a>
             </nav>
             
             <!-- User Actions -->
@@ -39,10 +39,10 @@
                         <span class="dropdown-arrow">▼</span>
                     </button>
                     <div class="user-dropdown">
-                        <a href="/project/Choco world/vendor/settings/profile.php" class="dropdown-item">⚙️ Store Settings</a>
-                        <a href="/project/Choco world/vendor/reviews/list.php" class="dropdown-item">⭐ Reviews</a>
+                        <a href="<?php echo BASE_URL; ?>vendor/settings/profile.php" class="dropdown-item">⚙️ Store Settings</a>
+                        <a href="<?php echo BASE_URL; ?>vendor/reviews/list.php" class="dropdown-item">⭐ Reviews</a>
                         <div class="dropdown-divider"></div>
-                        <a href="/project/Choco world/auth/logout.php" class="dropdown-item logout">🚪 Logout</a>
+                        <a href="<?php echo BASE_URL; ?>auth/logout.php" class="dropdown-item logout">🚪 Logout</a>
                     </div>
                 </div>
             </div>
@@ -57,14 +57,14 @@
         
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobileNav">
-            <a href="/project/Choco world/vendor/dashboard.php" class="mobile-nav-link">📊 Dashboard</a>
-            <a href="/project/Choco world/vendor/products/list.php" class="mobile-nav-link">🍫 My Products</a>
-            <a href="/project/Choco world/vendor/orders/list.php" class="mobile-nav-link">📦 Orders</a>
-            <a href="/project/Choco world/vendor/customers/list.php" class="mobile-nav-link">👥 Customers</a>
-            <a href="/project/Choco world/vendor/analytics/dashboard.php" class="mobile-nav-link">📈 Analytics</a>
+            <a href="<?php echo BASE_URL; ?>vendor/dashboard.php" class="mobile-nav-link">📊 Dashboard</a>
+            <a href="<?php echo BASE_URL; ?>vendor/products/list.php" class="mobile-nav-link">🍫 My Products</a>
+            <a href="<?php echo BASE_URL; ?>vendor/orders/list.php" class="mobile-nav-link">📦 Orders</a>
+            <a href="<?php echo BASE_URL; ?>vendor/customers/list.php" class="mobile-nav-link">👥 Customers</a>
+            <a href="<?php echo BASE_URL; ?>vendor/analytics/dashboard.php" class="mobile-nav-link">📈 Analytics</a>
             <div class="mobile-divider"></div>
-            <a href="/project/Choco world/vendor/settings/profile.php" class="mobile-nav-link">⚙️ Store Settings</a>
-            <a href="/project/Choco world/auth/logout.php" class="mobile-nav-link">🚪 Logout</a>
+            <a href="<?php echo BASE_URL; ?>vendor/settings/profile.php" class="mobile-nav-link">⚙️ Store Settings</a>
+            <a href="<?php echo BASE_URL; ?>auth/logout.php" class="mobile-nav-link">🚪 Logout</a>
         </div>
     </div>
 </header>

@@ -31,15 +31,12 @@ $wallet_balance = $wallet_stmt->fetchColumn();
 </head>
 <body>
     <?php 
-
-    $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
-    include $root . '/includes/customer_header.php'; 
+    require_once dirname(__DIR__) . '/includes/customer_header.php'; 
     ?>
 
     <div class="dashboard">
         <div class="container">
-            <div class="dashboard-content">
-                <div class="dashboard-header" style="border-bottom: none; margin-bottom: 2rem;">
+            <div class="dashboard-header" style="border-bottom: none; margin-bottom: 2rem;">
                     <div class="dashboard-title">
                         <h1>🍫 Welcome back, <?php echo htmlspecialchars($username); ?>!</h1>
                         <p>Explore our premium collections and manage your chocolate journey</p>

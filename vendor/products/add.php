@@ -77,10 +77,10 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAl
     </style>
 </head>
 
+<body>
     <?php 
-    $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
-
-    include $root . '/includes/vendor_header.php'; ?>
+    require_once dirname(dirname(__DIR__)) . '/includes/vendor_header.php'; 
+    ?>
 
     <div class="dashboard">
         <div class="container">

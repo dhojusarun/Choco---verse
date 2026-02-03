@@ -21,8 +21,7 @@ $email = $_SESSION['email'];
 </head>
 <body>
     <?php 
-    $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
-    require_once $root . '/config/database.php';
+    require_once dirname(__DIR__) . '/config/database.php';
     $vendor_id = $_SESSION['user_id'];
 
     // Stock stats
@@ -47,13 +46,12 @@ $email = $_SESSION['email'];
     $orders_stmt->execute([$vendor_id]);
     $pending_orders = $orders_stmt->fetchColumn();
 
-    include $root . '/includes/vendor_header.php'; 
+    require_once dirname(__DIR__) . '/includes/vendor_header.php'; 
     ?>
 
     <div class="dashboard">
         <div class="container">
-            <div class="dashboard-content">
-                <div class="dashboard-header-alt">
+            <div class="dashboard-header-alt">
                     <div class="vendor-welcome">
                         <h1>Welcome back, <?php echo htmlspecialchars($username); ?>! 💼</h1>
                         <p>Manage your artisan chocolate business and sweetness</p>

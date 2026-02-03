@@ -70,10 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../css/settings.css">
 </head>
 
+<body>
     <?php 
-    $root = $_SERVER['DOCUMENT_ROOT'] . '/project/Choco world';
-
-    include $root . '/includes/vendor_header.php'; ?>
+    require_once dirname(dirname(__DIR__)) . '/includes/vendor_header.php'; 
+    ?>
 
     <div class="dashboard">
         <div class="container">
