@@ -47,6 +47,23 @@ try {
     $_SESSION['email'] = $user['email'];
     $_SESSION['role'] = $user['role'];
     
+    // Sync session cart to database
+    if (isset($_SESSION['temp_cart']) && !empty($_SESSION['temp_cart'])) {
+        foreach ($_SESSION['temp_cart'] as $product_id => $quantity) {
+            // Check if product already in database cart
+            $check_stmt = $pdo->prepare("SELECT id FROM cart WHERE customer_id = ? AND product_id = ?");
+            $check_stmt->execute([$user['id'], $product_id]);
+            
+            if (!$check_stmt->fetch()) {
+                // If not in cart, insert it
+                $insert_stmt = $pdo->prepare("INSERT INTO cart (customer_id, product_id, quantity) VALUES (?, ?, ?)");
+                $insert_stmt->execute([$user['id'], $product_id, $quantity]);
+            }
+        }
+        // Clear temporary cart
+        unset($_SESSION['temp_cart']);
+    }
+    
     echo json_encode(['success' => true, 'message' => 'Login successful!']);
     
 } catch (PDOException $e) {

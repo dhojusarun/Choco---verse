@@ -15,7 +15,7 @@ $products_query = "
            COALESCE(AVG(r.rating), 0) as avg_rating,
            COUNT(DISTINCT r.id) as review_count,
            CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM favorites f WHERE f.product_id = p.id AND f.customer_id = ?) ELSE 0 END as is_favorite,
-           CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) ELSE 0 END as in_cart
+            CASE WHEN ? IS NOT NULL THEN EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) ELSE 0 END as in_cart_db
     FROM products p
     JOIN users u ON p.vendor_id = u.id
     LEFT JOIN categories c ON p.category_id = c.id
@@ -156,16 +156,20 @@ if ($is_logged_in) {
                                 <?php endif; ?>
                             </div>
                             
-                            <div class="product-actions">
-                                <?php if ($product['stock'] <= 0): ?>
-                                    <button class="btn btn-secondary btn-small" disabled style="opacity: 0.6; cursor: not-allowed;">Out of Stock</button>
-                                <?php elseif ($product['in_cart']): ?>
-                                    <button class="btn btn-secondary btn-small" disabled>✓ In Cart</button>
-                                <?php else: ?>
-                                    <button class="btn btn-primary btn-small" onclick="addToCart(<?php echo $product['id']; ?>, this)">
-                                        🛒 Add to Cart
-                                    </button>
-                                <?php endif; ?>
+                             <div class="product-actions">
+                                 <?php 
+                                 $is_in_temp_cart = isset($_SESSION['temp_cart'][$product['id']]);
+                                 $in_cart = $product['in_cart_db'] || $is_in_temp_cart;
+                                 ?>
+                                 <?php if ($product['stock'] <= 0): ?>
+                                     <button class="btn btn-secondary btn-small" disabled style="opacity: 0.6; cursor: not-allowed;">Out of Stock</button>
+                                 <?php elseif ($in_cart): ?>
+                                     <button class="btn btn-secondary btn-small" disabled>✓ In Cart</button>
+                                 <?php else: ?>
+                                     <button class="btn btn-primary btn-small" onclick="addToCart(<?php echo $product['id']; ?>, this)">
+                                         🛒 Add to Cart
+                                     </button>
+                                 <?php endif; ?>
                                 <a href="details.php?id=<?php echo $product['id']; ?>" class="btn btn-secondary btn-small">
                                     View Details
                                 </a>
@@ -186,10 +190,7 @@ if ($is_logged_in) {
     
     <script>
         function addToCart(productId, btn) {
-            <?php if (!$is_logged_in): ?>
-                window.location.href = '../login.php';
-                return;
-            <?php endif; ?>
+            // Guests are allowed to add to cart (stored in session)
             fetch('add-to-cart.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},

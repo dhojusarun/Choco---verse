@@ -1,8 +1,13 @@
 <?php
 session_start();
-// Optional login check - allow guests to view cart
-$customer_id = $_SESSION['user_id'] ?? null;
+// Restricted access - redirect guests to login if NOT a count request
 $is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'customer';
+
+if (!$is_logged_in && !isset($_GET['count'])) {
+    header('Location: ../login.php');
+    exit;
+}
+$customer_id = $_SESSION['user_id'] ?? null;
 
 require_once '../../config/database.php';
 
@@ -15,6 +20,13 @@ if (isset($_GET['count'])) {
         $count_stmt = $pdo->prepare("SELECT SUM(quantity) FROM cart WHERE customer_id = ?");
         $count_stmt->execute([$customer_id]);
         $count = (int)$count_stmt->fetchColumn();
+    } else {
+        // Guest count from session
+        if (isset($_SESSION['temp_cart'])) {
+            foreach ($_SESSION['temp_cart'] as $qty) {
+                $count += $qty;
+            }
+        }
     }
     echo json_encode(['count' => $count]);
     exit;

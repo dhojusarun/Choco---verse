@@ -19,7 +19,7 @@ $product_stmt = $pdo->prepare("
            COALESCE(AVG(r.rating), 0) as avg_rating,
            COUNT(DISTINCT r.id) as review_count,
            CASE WHEN ? > 0 THEN EXISTS(SELECT 1 FROM favorites f WHERE f.product_id = p.id AND f.customer_id = ?) ELSE 0 END as is_favorite,
-           CASE WHEN ? > 0 THEN EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) ELSE 0 END as in_cart,
+           CASE WHEN ? > 0 THEN EXISTS(SELECT 1 FROM cart c WHERE c.product_id = p.id AND c.customer_id = ?) ELSE 0 END as in_cart_db,
            CASE WHEN ? > 0 THEN EXISTS(
                SELECT 1 FROM orders o 
                JOIN order_items oi ON o.id = oi.order_id 
@@ -65,6 +65,13 @@ if ($is_logged_in) {
     $cart_count_stmt = $pdo->prepare("SELECT SUM(quantity) FROM cart WHERE customer_id = ?");
     $cart_count_stmt->execute([$customer_id]);
     $cart_count = (int)$cart_count_stmt->fetchColumn();
+} else {
+    // Guest count from session
+    if (isset($_SESSION['temp_cart'])) {
+        foreach ($_SESSION['temp_cart'] as $qty) {
+            $cart_count += $qty;
+        }
+    }
 }
 
 // Handle single product review submission
@@ -180,7 +187,11 @@ if (isset($_GET['review_success'])) {
                     </div>
 
                     <div class="details-actions">
-                        <?php if ($product['in_cart']): ?>
+                        <?php 
+                        $is_in_temp_cart = isset($_SESSION['temp_cart'][$product['id']]);
+                        $in_cart = $product['in_cart_db'] || $is_in_temp_cart;
+                        ?>
+                        <?php if ($in_cart): ?>
                             <button class="btn btn-secondary btn-large" disabled>✓ Successfully in Cart</button>
                         <?php elseif ($product['stock'] > 0): ?>
                             <button class="btn btn-primary btn-large" onclick="addToCart(<?php echo $product['id']; ?>, this)">
@@ -309,10 +320,7 @@ if (isset($_GET['review_success'])) {
 
     <script>
         function addToCart(productId, btn) {
-            <?php if (!$is_logged_in): ?>
-                window.location.href = '../login.php';
-                return;
-            <?php endif; ?>
+            // Guests are allowed to add to cart (stored in session)
             fetch('add-to-cart.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},

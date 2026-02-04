@@ -2,14 +2,12 @@
 session_start();
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'customer') {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    exit;
-}
+// Remove strict login check - allow guests to add to cart
+$is_logged_in = isset($_SESSION['user_id']) && ($_SESSION['role'] ?? '') === 'customer';
+$customer_id = $is_logged_in ? $_SESSION['user_id'] : null;
 
 require_once '../../config/database.php';
 
-$customer_id = $_SESSION['user_id'];
 $product_id = $_POST['product_id'] ?? 0;
 
 try {
@@ -23,18 +21,33 @@ try {
         exit;
     }
     
-    // Check if already in cart
-    $check_stmt = $pdo->prepare("SELECT * FROM cart WHERE customer_id = ? AND product_id = ?");
-    $check_stmt->execute([$customer_id, $product_id]);
-    
-    if ($check_stmt->fetch()) {
-        echo json_encode(['success' => false, 'message' => 'Already in cart']);
-        exit;
+    if ($is_logged_in) {
+        // Logged in logic: Use Database
+        $check_stmt = $pdo->prepare("SELECT * FROM cart WHERE customer_id = ? AND product_id = ?");
+        $check_stmt->execute([$customer_id, $product_id]);
+        
+        if ($check_stmt->fetch()) {
+            echo json_encode(['success' => false, 'message' => 'Already in cart']);
+            exit;
+        }
+        
+        // Add to cart in DB
+        $insert_stmt = $pdo->prepare("INSERT INTO cart (customer_id, product_id, quantity) VALUES (?, ?, 1)");
+        $insert_stmt->execute([$customer_id, $product_id]);
+    } else {
+        // Guest logic: Use Session
+        if (!isset($_SESSION['temp_cart'])) {
+            $_SESSION['temp_cart'] = [];
+        }
+        
+        if (isset($_SESSION['temp_cart'][$product_id])) {
+            echo json_encode(['success' => false, 'message' => 'Already in cart']);
+            exit;
+        }
+        
+        // Add to session cart
+        $_SESSION['temp_cart'][$product_id] = 1; // product_id => quantity
     }
-    
-    // Add to cart
-    $insert_stmt = $pdo->prepare("INSERT INTO cart (customer_id, product_id, quantity) VALUES (?, ?, 1)");
-    $insert_stmt->execute([$customer_id, $product_id]);
     
     echo json_encode(['success' => true, 'message' => 'Added to cart!']);
     
