@@ -7,10 +7,11 @@
 }
 
 .cart-items {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     padding: 2rem;
-    border-radius: 20px;
+    border-radius: 25px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
 }
 
 .cart-item {
@@ -18,8 +19,15 @@
     grid-template-columns: 120px 1fr auto;
     gap: 1.5rem;
     padding: 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     align-items: center;
+    transition: var(--transition-smooth);
+    border-radius: 15px;
+}
+
+.cart-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(10px);
 }
 
 .cart-item:last-child {
@@ -59,32 +67,42 @@
 .quantity-control {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
-    border-radius: 10px;
+    gap: 0.8rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.4rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .qty-btn {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     border: none;
     background: var(--gradient-gold);
     color: var(--chocolate-dark);
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
 }
 
 .qty-input {
-    width: 60px;
+    width: 45px;
     text-align: center;
     background: transparent;
     border: none;
     color: var(--cream);
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .remove-btn {
@@ -102,13 +120,14 @@
 }
 
 .cart-summary {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     padding: 2rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
     height: fit-content;
     position: sticky;
-    top: 2rem;
+    top: 6rem;
+    backdrop-filter: blur(15px);
 }
 
 .summary-row {
@@ -167,7 +186,8 @@
 
 .payment-option.active {
     border-color: var(--gold);
-    background: rgba(212, 175, 55, 0.08);
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.1), 0 0 10px rgba(212, 175, 55, 0.2);
 }
 
 .payment-option input[type="radio"] {
@@ -350,6 +370,7 @@
         opacity: 0;
         transform: translateY(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

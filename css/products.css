@@ -18,18 +18,25 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    backdrop-filter: blur(10px);
 }
 
 .product-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .product-image {
     width: 100%;
     height: 220px;
     object-fit: cover;
+    transition: var(--transition-smooth);
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
 }
 
 .product-info {
@@ -103,6 +110,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 .favorite-btn:hover {
@@ -120,17 +128,21 @@
     right: 2rem;
     background: var(--gradient-gold);
     color: var(--chocolate-dark);
-    padding: 1rem 1.5rem;
+    padding: 1.2rem 2rem;
     border-radius: 50px;
-    font-weight: 600;
-    z-index: 100;
+    font-weight: 700;
+    z-index: 1000;
     box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
     text-decoration: none;
     transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    animation: pulse-gold 2s infinite;
 }
 
 .cart-indicator:hover {
-    transform: translateY(-2px);
+    transform: translateY(-5px) scale(1.05);
     box-shadow: 0 15px 35px rgba(212, 175, 55, 0.6);
 }
 
@@ -182,6 +194,39 @@
         padding: 0;
     }
 }
+
+/* Navigation & Links */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(5px);
+}
+
+.back-link:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--gold);
+    transform: translateX(-5px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+}
+
+.back-link i {
+    transition: var(--transition-smooth);
+}
+
+.back-link:hover i {
+    transform: translateX(-3px);
+}
+
 /* Product Details Styles */
 .product-details-container {
     display: grid;
@@ -192,6 +237,7 @@
     padding: 3rem;
     border-radius: 30px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
 }
 
 .details-image-section {
@@ -203,6 +249,11 @@
     border-radius: 20px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     border: 2px solid rgba(212, 175, 55, 0.2);
+    transition: var(--transition-smooth);
+}
+
+.main-product-image:hover {
+    transform: scale(1.02);
 }
 
 .details-favorite-btn {
@@ -221,6 +272,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 .details-favorite-btn:hover {
@@ -235,6 +287,7 @@
     font-size: 3rem;
     color: var(--gold);
     margin-bottom: 0.5rem;
+    font-family: var(--font-heading);
 }
 
 .details-vendor {
@@ -250,6 +303,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.stars {
+    color: var(--gold);
 }
 
 .details-price {
@@ -268,7 +325,19 @@
 }
 
 .details-stock {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.details-actions {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-large {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.1rem;
+    min-width: 200px;
 }
 
 .reviews-section {
@@ -286,10 +355,16 @@
 
 .review-card {
     background: rgba(255, 255, 255, 0.03);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 20px;
     margin-bottom: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition-smooth);
+}
+
+.review-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(212, 175, 55, 0.2);
 }
 
 .review-user-info {
@@ -308,9 +383,15 @@
     font-size: 0.9rem;
 }
 
+.review-rating {
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
 .review-comment {
-    line-height: 1.6;
+    line-height: 1.8;
     opacity: 0.9;
+    font-size: 1.05rem;
 }
 
 @media (max-width: 968px) {

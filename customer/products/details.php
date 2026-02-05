@@ -127,8 +127,8 @@ if (isset($_GET['review_success'])) {
 
     <div class="dashboard">
         <div class="container">
-            <div class="dashboard-header" style="border-bottom: none; margin-bottom: 1rem;">
-                <a href="browse.php" class="back-link">← Back to Products</a>
+            <div class="dashboard-header" style="margin-bottom: 2rem;">
+                <a href="browse.php" class="back-link"><i>←</i> Back to Products</a>
             </div>
 
             <div class="product-details-container">

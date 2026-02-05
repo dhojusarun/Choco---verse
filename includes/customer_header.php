@@ -42,12 +42,6 @@ if (!isset($wallet_balance) && isset($customer_id) && $customer_id > 0) {
                     <span class="wallet-amount">$<?php echo number_format($wallet_balance, 2); ?></span>
                 </div>
                 
-                <!-- Cart -->
-                <a href="<?php echo BASE_URL; ?>customer/products/cart.php" class="header-icon-btn" title="Shopping Cart">
-                    🛒
-                    <span class="cart-badge" id="cart-count">0</span>
-                </a>
-                
                 <?php if (isset($customer_id) && $customer_id > 0): ?>
                 <!-- User Menu -->
                 <div class="user-menu">
@@ -120,6 +114,9 @@ function updateCartCount() {
                 if (badgeAction) {
                     badgeAction.textContent = data.count;
                     badgeAction.style.display = 'flex';
+                    badgeAction.style.animation = 'cart-bounce 0.4s ease';
+                    // Reset animation so it can trigger again
+                    setTimeout(() => badgeAction.style.animation = '', 400);
                 }
                 if (badgeNav) {
                     badgeNav.textContent = data.count;
